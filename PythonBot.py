@@ -23,13 +23,13 @@ async def age(ctx):
     response = "Ich wurde am 19.01.2021 von @Niku#6103 erstellt! (´• ω •`)ﾉ "
     await ctx.send(response)
 
-@bot.command(name='rolldice', help='Rolls a dice for you')
+@bot.command(name='rolldice', help='Rolls a dice for you (+rolldice [amount] [sides])')
 async def roll(ctx, number_of_dice: int, number_of_sides: int):
     for _ in range(number_of_dice):
         rolled_number = random.randint(1,number_of_sides)
         await ctx.send(f'rolled: {rolled_number}')
 
-@bot.command(name='spam', help='spams for you')
+@bot.command(name='spam', help='spams for you (+spam [amount])')
 async def spam(ctx, number_of_dice: int):
     for _ in range(number_of_dice):
         await ctx.send('OWO')
