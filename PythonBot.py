@@ -11,7 +11,7 @@ bot = commands.Bot(command_prefix='+')
 @bot.event
 async def on_ready():
 
-    print('connected (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
+    print('connected and running! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
 
 @bot.command(name='uwu', help='Respons with something even more cute', )
 async def uwu(ctx):
@@ -47,7 +47,15 @@ async def magic(ctx):
 
 @bot.command(name='japaneseemoji', help='Shows you a random japanese emoji (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
 async def emoji(ctx):
-    await ctx.send('still a work in progress. u-u')
+    await ctx.send('still a work in progress. 	｡ﾟ･ (>﹏<) ･ﾟ｡')
+
+@bot.command(name='fact', help='Shows you a random fact from the internet ☆ﾐ(o*･ω･)ﾉ')
+async def fact(ctx):
+    await ctx.send('still a work in progress. 	｡ﾟ･ (>﹏<) ･ﾟ｡')
+
+@bot.command(name='song', help='Shows you a random song ( ˘ ɜ˘) ♬♪♫')
+async def song(ctx):
+    await ctx.send('still a work in progress. 	｡ﾟ･ (>﹏<) ･ﾟ｡')
 
 
 bot.run(TOKEN)
