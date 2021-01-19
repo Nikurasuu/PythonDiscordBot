@@ -29,6 +29,13 @@ async def roll(ctx, number_of_dice: int, number_of_sides: int):
         rolled_number = random.randint(1,number_of_sides)
         await ctx.send(f'rolled: {rolled_number}')
 
+@bot.command(name='isitokay', help="Helps you make decisions, that you can't make.")
+async def isitokay(ctx):
+    if random.randint(1,2) == 1:
+        await ctx.send('Yes it is ٩(◕‿◕｡)۶')
+    else:
+        await ctx.send('No it is not (｡•́︿•̀｡)')
+
 @bot.command(name='spam', help='spams for you (+spam [amount])')
 async def spam(ctx, number_of_dice: int):
     for _ in range(number_of_dice):
