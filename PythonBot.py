@@ -1,5 +1,6 @@
 import os
 import random
+import randfacts
 
 from discord.ext import commands
 
@@ -51,7 +52,8 @@ async def emoji(ctx):
 
 @bot.command(name='fact', help='Shows you a random fact from the internet ☆ﾐ(o*･ω･)ﾉ')
 async def fact(ctx):
-    await ctx.send('still a work in progress. 	｡ﾟ･ (>﹏<) ･ﾟ｡')
+    await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
+    await ctx.send(randfacts.getFact())
 
 @bot.command(name='song', help='Shows you a random song ( ˘ ɜ˘) ♬♪♫')
 async def song(ctx):
