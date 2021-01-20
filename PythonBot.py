@@ -2,6 +2,8 @@ import os
 import random
 import randfacts
 import requests
+from io import StringIO as io
+import json
 from pyowm import OWM
 from pyowm.utils import config
 from pyowm.utils import timestamps
@@ -91,16 +93,15 @@ async def weather(ctx, location: str):
     await ctx.send(f'Aktuelle Temperatur: {temp} Celsius')
     await ctx.send(f'Heute sind es mindestens {tempmin} Celsius und es werden maximal {tempmax} Celsius!')
 
-@bot.command(name='w2g')
-async def w2g(ctx):
+@bot.command(name='w2g', help="creates a watch2gether room for you (+w2g [video-link])")
+async def w2g(ctx, link=''):
     await ctx.send('creating a room for you:')
-    url='http://w2g.tv/rooms/create.json'
-    params = dict(
-        w2g_api_key=W2G_TOKEN
-    )
-    resp = requests.get(url=url, params=params)
-    print(resp.json)
-    if resp.status_code == 500:
+    r = requests.post('https://w2g.tv/rooms/create.json', json={"w2g_api_key": W2G_TOKEN, "share": link})
+    rdata = json.loads(r.text)
+    key = rdata['streamkey']
+    url = f'https://w2g.tv/rooms/{key}'
+    await ctx.send(url)
+    if r.status_code == 500:
         await ctx.send('could not contact the API')
 
 
