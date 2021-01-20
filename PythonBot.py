@@ -1,17 +1,27 @@
 import os
 import random
 import randfacts
+import aiohttp
+import requests
+from pyowm import OWM
+from pyowm.utils import config
+from pyowm.utils import timestamps
+print('imported all libraries!')
+print('trying to connect to discord.')
 
 from discord.ext import commands
 
 from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+W2G_TOKEN = os.getenv('W2G_TOKEN')
+OWM_TOKEN = os.getenv('OWM_TOKEN')
+owm = OWM(OWM_TOKEN)
+mgr = owm.weather_manager()
 
 bot = commands.Bot(command_prefix='+')
 @bot.event
 async def on_ready():
-
     print('connected and running! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
 
 @bot.command(name='uwu', help='Respons with something even more cute', )
@@ -46,18 +56,35 @@ async def spam(ctx, number_of_dice: int):
 async def magic(ctx):
     await ctx.send('(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
 
-@bot.command(name='japaneseemoji', help='Shows you a random japanese emoji (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
-async def emoji(ctx):
-    await ctx.send('still a work in progress. 	｡ﾟ･ (>﹏<) ･ﾟ｡')
-
 @bot.command(name='fact', help='Shows you a random fact from the internet ☆ﾐ(o*･ω･)ﾉ')
 async def fact(ctx):
     await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
     await ctx.send(randfacts.getFact())
 
-@bot.command(name='song', help='Shows you a random song ( ˘ ɜ˘) ♬♪♫')
-async def song(ctx):
-    await ctx.send('still a work in progress. 	｡ﾟ･ (>﹏<) ･ﾟ｡')
+@bot.command(name='weather', help='Tells you the weather (+weather [location])')
+async def weather(ctx, location: str):
+    await ctx.send(f'Das aktuelle Wetter in {location}:')
+    observation = mgr.weather_at_place(location)
+    w = observation.weather
+    temperature = w.temperature('celsius')
+    temp = temperature['temp']
+    tempmin = temperature['temp_min']
+    tempmax = temperature['temp_max']
+    await ctx.send(f'Aktuelle Temperatur: {temp} Celsius')
+    await ctx.send(f'Heute sind es mindestens {tempmin} Celsius und es werden maximal {tempmax} Celsius!')
+
+@bot.command(name='w2g')
+async def w2g(ctx):
+    await ctx.send('creating a room for you:')
+    url='http://w2g.tv/rooms/create.json'
+    params = dict(
+        w2g_api_key=W2G_TOKEN
+    )
+    resp = requests.get(url=url, params=params)
+    print(resp.json)
+    if resp.status_code == 500:
+        await ctx.send('could not contact the API')
+
 
 
 bot.run(TOKEN)
