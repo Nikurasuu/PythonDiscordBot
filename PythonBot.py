@@ -55,11 +55,6 @@ async def isitokay(ctx):
     else:
         await ctx.send('No it is not (｡•́︿•̀｡)')
 
-@bot.command(name='spam', help='spams for you (+spam [amount])')
-async def spam(ctx, number_of_dice: int):
-    for _ in range(number_of_dice):
-        await ctx.send('OWO')
-
 @bot.command(name='magic', help='Shows you some magic ✧')
 async def magic(ctx):
     await ctx.send('(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
