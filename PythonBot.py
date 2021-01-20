@@ -8,6 +8,7 @@ from pyowm.utils import timestamps
 print('imported all libraries!')
 print('trying to connect to discord.')
 
+import discord
 from discord.ext import commands
 
 from dotenv import load_dotenv
@@ -64,6 +65,18 @@ async def magic(ctx):
 async def fact(ctx):
     await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
     await ctx.send(randfacts.getFact())
+
+@bot.command(name='join', help='joins your channel, so you are not that lonely.')
+async def join(ctx):
+    channel = ctx.author.voice.channel
+    await channel.connect()
+    await ctx.send('٩(◕‿◕｡)۶')
+
+@bot.command(name='leave', help='disconnects from your channel.')
+async def leave(ctx):
+    channel = ctx.author.voice.channel
+    await ctx.voice_client.disconnect()
+    await ctx.send('(｡•́︿•̀｡)')
 
 @bot.command(name='weather', help='Tells you the weather (+weather [location])')
 async def weather(ctx, location: str):
