@@ -1,7 +1,6 @@
 import os
 import random
 import randfacts
-import aiohttp
 import requests
 from pyowm import OWM
 from pyowm.utils import config
