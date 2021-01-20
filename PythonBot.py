@@ -26,16 +26,6 @@ bot = commands.Bot(command_prefix='+')
 async def on_ready():
     print('connected and running! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="+help"))
-
-@bot.command(name='uwu', help='Respons with something even more cute', )
-async def uwu(ctx):
-    response = "UwU"
-    await ctx.send(response)
-
-@bot.command(name='age', help='Learn about this bot (*^^*)')
-async def age(ctx):
-    response = "Ich wurde am 19.01.2021 von @Niku#6103 erstellt! (´• ω •`)ﾉ "
-    await ctx.send(response)
     
 @bot.command(name='github', help='Shows you the source-code of this bot')
 async def age(ctx):
@@ -99,6 +89,32 @@ async def w2g(ctx, link=''):
     if r.status_code == 500:
         await ctx.send('could not contact the API')
 
+@bot.command(name='me_irl', help='sends a meme from me_irl subreddit')
+async def meme(ctx):
+    r = requests.get('https://meme-api.herokuapp.com/gimme/me_irl')
+    rdata = json.loads(r.text)
+    subreddit = rdata['subreddit']
+    author = rdata['author']
+    await ctx.send(f'I found this on {subreddit} from {author}:')
+    await ctx.send(rdata['url'])
+
+@bot.command(name='wholesome', help='sends you a wholesome meme')
+async def meme(ctx):
+    r = requests.get('https://meme-api.herokuapp.com/gimme/wholesomememes')
+    rdata = json.loads(r.text)
+    subreddit = rdata['subreddit']
+    author = rdata['author']
+    await ctx.send(f'I found this on {subreddit} from {author}:')
+    await ctx.send(rdata['url'])
+
+@bot.command(name='dank', help='sends you a dank-meme')
+async def meme(ctx):
+    r = requests.get('https://meme-api.herokuapp.com/gimme/dankmemes')
+    rdata = json.loads(r.text)
+    subreddit = rdata['subreddit']
+    author = rdata['author']
+    await ctx.send(f'I found this on {subreddit} from {author}:')
+    await ctx.send(rdata['url'])
 
 
 bot.run(TOKEN)
