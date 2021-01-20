@@ -32,6 +32,11 @@ async def uwu(ctx):
 async def age(ctx):
     response = "Ich wurde am 19.01.2021 von @Niku#6103 erstellt! (´• ω •`)ﾉ "
     await ctx.send(response)
+    
+@bot.command(name='github', help='Shows you the source-code of this bot')
+async def age(ctx):
+    response = "https://github.com/Nikurasuu/PythonDiscordBot"
+    await ctx.send(response)
 
 @bot.command(name='rolldice', help='Rolls a dice for you (+rolldice [amount] [sides])')
 async def roll(ctx, number_of_dice: int, number_of_sides: int):
