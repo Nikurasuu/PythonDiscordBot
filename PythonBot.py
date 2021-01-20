@@ -23,7 +23,7 @@ bot = commands.Bot(command_prefix='+')
 @bot.event
 async def on_ready():
     print('connected and running! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="a song"))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="+help"))
 
 @bot.command(name='uwu', help='Respons with something even more cute', )
 async def uwu(ctx):
