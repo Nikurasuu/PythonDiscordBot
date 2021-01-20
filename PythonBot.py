@@ -13,12 +13,11 @@ print('trying to connect to discord.')
 import discord
 from discord.ext import commands
 
-#load_dotenv()
-from dotenv import dotenv_values
-temp = dotenv_values(".env")
-TOKEN = temp('DISCORD_TOKEN')
-W2G_TOKEN = temp('W2G_TOKEN')
-OWM_TOKEN = temp('OWM_TOKEN')
+from dotenv import load_dotenv
+load_dotenv()
+TOKEN = os.getenv('DISCORD_TOKEN')
+W2G_TOKEN = os.getenv('W2G_TOKEN')
+OWM_TOKEN = os.getenv('OWM_TOKEN')
 owm = OWM(OWM_TOKEN)
 mgr = owm.weather_manager()
 
