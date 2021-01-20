@@ -24,7 +24,7 @@ mgr = owm.weather_manager()
 bot = commands.Bot(command_prefix='+')
 @bot.event
 async def on_ready():
-    print('connected and running! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
+    print('connected and running!')
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="+help"))
     
 @bot.command(name='github', help='Shows you the source-code of this bot')
