@@ -24,8 +24,7 @@ mgr = owm.weather_manager()
 bot = commands.Bot(command_prefix='+')
 
 def debug():
-    channel = ctx.author.voice.channel
-    print(f'answering to {channel}')
+    print('answering')
 
 
 @bot.event
@@ -35,8 +34,7 @@ async def on_ready():
     
 @bot.command(name='github', help='Shows you the source-code of this bot')
 async def github(ctx):
-    channel = ctx.author.voice.channel
-    print(f'answering to {channel}')
+    debug()
     response = "https://github.com/Nikurasuu/PythonDiscordBot"
     await ctx.send(response)
 
