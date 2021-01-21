@@ -70,6 +70,7 @@ async def fact(ctx):
 async def join(ctx):
     debug()
     channel = ctx.author.voice.channel
+    print(f'joined {channel}')
     await channel.connect()
     await ctx.send('٩(◕‿◕｡)۶')
 
@@ -77,12 +78,14 @@ async def join(ctx):
 async def leave(ctx):
     debug()
     channel = ctx.author.voice.channel
+    print(f'leaving {channel}')
     await ctx.voice_client.disconnect()
     await ctx.send('(｡•́︿•̀｡)')
 
 @bot.command(name='weather', help='Tells you the weather (+weather [location])')
 async def weather(ctx, location: str):
     debug()
+    print('contacting api.openweathermap.org..')
     await ctx.send(f'The weather in {location}:')
     observation = mgr.weather_at_place(location)
     w = observation.weather
@@ -90,12 +93,14 @@ async def weather(ctx, location: str):
     temp = temperature['temp']
     tempmin = temperature['temp_min']
     tempmax = temperature['temp_max']
+    print('success')
     await ctx.send(f'Temperature right now: {temp} celsius')
     await ctx.send(f'Today are at least {tempmin} celsius and it should get up to {tempmax} celsius!')
 
 @bot.command(name='w2g', help="creates a watch2gether room for you (+w2g [video-link])")
 async def w2g(ctx, link=''):
     debug()
+    print('contacting w2g.tv/rooms/create.json')
     await ctx.send('creating a room for you:')
     r = requests.post('https://w2g.tv/rooms/create.json', json={"w2g_api_key": W2G_TOKEN, "share": link})
     rdata = json.loads(r.text)
@@ -104,36 +109,46 @@ async def w2g(ctx, link=''):
     await ctx.send(url)
     if r.status_code == 500:
         await ctx.send('could not contact the API')
+        print('could not contact the API')
+    else:
+        print('success')
+    
 
 @bot.command(name='me_irl', help='sends a meme from me_irl subreddit')
 async def meme(ctx):
     debug()
+    print('contacting meme-api.herokuapp.com/gimme/me_irl')
     r = requests.get('https://meme-api.herokuapp.com/gimme/me_irl')
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
     await ctx.send(f'I found this on {subreddit} from {author}:')
     await ctx.send(rdata['url'])
+    print('success')
 
 @bot.command(name='wholesome', help='sends you a wholesome meme')
 async def meme(ctx):
     debug()
+    print('contacting meme-api.herokuapp.com/gimme/wholesomememes')
     r = requests.get('https://meme-api.herokuapp.com/gimme/wholesomememes')
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
     await ctx.send(f'I found this on {subreddit} from {author}:')
     await ctx.send(rdata['url'])
+    print('success')
 
 @bot.command(name='dank', help='sends you a dank-meme')
 async def meme(ctx):
     debug()
+    print('contacting meme-api.herokuapp.com/gimme/dankmemes')
     r = requests.get('https://meme-api.herokuapp.com/gimme/dankmemes')
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
     await ctx.send(f'I found this on {subreddit} from {author}:')
     await ctx.send(rdata['url'])
+    print('success')
 
 
 bot.run(TOKEN)
