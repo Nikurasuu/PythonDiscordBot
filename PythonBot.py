@@ -85,7 +85,7 @@ async def leave(ctx):
 @bot.command(name='weather', help='Tells you the weather (+weather [location])')
 async def weather(ctx, location: str):
     debug()
-    print('contacting api.openweathermap.org..')
+    print('contacting api.openweathermap.org')
     await ctx.send(f'The weather in {location}:')
     observation = mgr.weather_at_place(location)
     w = observation.weather
