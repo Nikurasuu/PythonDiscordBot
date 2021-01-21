@@ -2,6 +2,7 @@ import os
 import random
 import randfacts
 import requests
+from datetime import datetime
 from io import StringIO as io
 import json
 from pyowm import OWM
@@ -24,7 +25,8 @@ mgr = owm.weather_manager()
 bot = commands.Bot(command_prefix='+')
 
 def debug():
-    print('answering')
+    dateTimeObj = datetime.now()
+    print(f'responding {dateTimeObj}')
 
 
 @bot.event
