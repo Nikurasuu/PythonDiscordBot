@@ -24,8 +24,7 @@ mgr = owm.weather_manager()
 bot = commands.Bot(command_prefix='+')
 
 def debug():
-    channel = ctx.author.voice.channel
-    print(f'answering to {channel}')
+    print('answering')
 
 
 @bot.event
