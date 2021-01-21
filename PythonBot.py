@@ -22,24 +22,33 @@ owm = OWM(OWM_TOKEN)
 mgr = owm.weather_manager()
 
 bot = commands.Bot(command_prefix='+')
+
+def debug():
+    channel = ctx.author.voice.channel
+    print(f'answering to {channel}')
+
+
 @bot.event
 async def on_ready():
     print('connected and running!')
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="+help"))
     
 @bot.command(name='github', help='Shows you the source-code of this bot')
-async def age(ctx):
+async def github(ctx):
+    debug()
     response = "https://github.com/Nikurasuu/PythonDiscordBot"
     await ctx.send(response)
 
 @bot.command(name='rolldice', help='Rolls a dice for you (+rolldice [amount] [sides])')
 async def roll(ctx, number_of_dice: int, number_of_sides: int):
+    debug()
     for _ in range(number_of_dice):
         rolled_number = random.randint(1,number_of_sides)
         await ctx.send(f'rolled: {rolled_number}')
 
 @bot.command(name='isitokay', help="Helps you make decisions, that you can't make.")
 async def isitokay(ctx):
+    debug()
     if random.randint(1,2) == 1:
         await ctx.send('Yes it is ٩(◕‿◕｡)۶')
     else:
@@ -47,27 +56,32 @@ async def isitokay(ctx):
 
 @bot.command(name='magic', help='Shows you some magic ✧')
 async def magic(ctx):
+    debug()
     await ctx.send('(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
 
 @bot.command(name='fact', help='Shows you a random fact from the internet ☆ﾐ(o*･ω･)ﾉ')
 async def fact(ctx):
+    debug()
     await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
     await ctx.send(randfacts.getFact())
 
 @bot.command(name='join', help='joins your channel, so you are not that lonely.')
 async def join(ctx):
+    debug()
     channel = ctx.author.voice.channel
     await channel.connect()
     await ctx.send('٩(◕‿◕｡)۶')
 
 @bot.command(name='leave', help='disconnects from your channel.')
 async def leave(ctx):
+    debug()
     channel = ctx.author.voice.channel
     await ctx.voice_client.disconnect()
     await ctx.send('(｡•́︿•̀｡)')
 
 @bot.command(name='weather', help='Tells you the weather (+weather [location])')
 async def weather(ctx, location: str):
+    debug()
     await ctx.send(f'The weather in {location}:')
     observation = mgr.weather_at_place(location)
     w = observation.weather
@@ -80,6 +94,7 @@ async def weather(ctx, location: str):
 
 @bot.command(name='w2g', help="creates a watch2gether room for you (+w2g [video-link])")
 async def w2g(ctx, link=''):
+    debug()
     await ctx.send('creating a room for you:')
     r = requests.post('https://w2g.tv/rooms/create.json', json={"w2g_api_key": W2G_TOKEN, "share": link})
     rdata = json.loads(r.text)
@@ -91,6 +106,7 @@ async def w2g(ctx, link=''):
 
 @bot.command(name='me_irl', help='sends a meme from me_irl subreddit')
 async def meme(ctx):
+    debug()
     r = requests.get('https://meme-api.herokuapp.com/gimme/me_irl')
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
@@ -100,6 +116,7 @@ async def meme(ctx):
 
 @bot.command(name='wholesome', help='sends you a wholesome meme')
 async def meme(ctx):
+    debug()
     r = requests.get('https://meme-api.herokuapp.com/gimme/wholesomememes')
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
@@ -109,6 +126,7 @@ async def meme(ctx):
 
 @bot.command(name='dank', help='sends you a dank-meme')
 async def meme(ctx):
+    debug()
     r = requests.get('https://meme-api.herokuapp.com/gimme/dankmemes')
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
