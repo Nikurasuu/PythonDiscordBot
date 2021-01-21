@@ -68,15 +68,15 @@ async def leave(ctx):
 
 @bot.command(name='weather', help='Tells you the weather (+weather [location])')
 async def weather(ctx, location: str):
-    await ctx.send(f'Das aktuelle Wetter in {location}:')
+    await ctx.send(f'The weather in {location}:')
     observation = mgr.weather_at_place(location)
     w = observation.weather
     temperature = w.temperature('celsius')
     temp = temperature['temp']
     tempmin = temperature['temp_min']
     tempmax = temperature['temp_max']
-    await ctx.send(f'Aktuelle Temperatur: {temp} Celsius')
-    await ctx.send(f'Heute sind es mindestens {tempmin} Celsius und es werden maximal {tempmax} Celsius!')
+    await ctx.send(f'Temperature right now: {temp} celsius')
+    await ctx.send(f'Today are at least {tempmin} celsius and it should get up to {tempmax} celsius!')
 
 @bot.command(name='w2g', help="creates a watch2gether room for you (+w2g [video-link])")
 async def w2g(ctx, link=''):
