@@ -111,6 +111,7 @@ async def w2g(ctx, link=''):
         await ctx.send('could not contact the API')
         print('could not contact the API')
     else:
+        print(f'streamkey: {key}')
         print('success')
     
 
@@ -124,6 +125,7 @@ async def meme(ctx):
     author = rdata['author']
     await ctx.send(f'I found this on {subreddit} from {author}:')
     await ctx.send(rdata['url'])
+    print(url)
     print('success')
 
 @bot.command(name='wholesome', help='sends you a wholesome meme')
@@ -136,6 +138,7 @@ async def meme(ctx):
     author = rdata['author']
     await ctx.send(f'I found this on {subreddit} from {author}:')
     await ctx.send(rdata['url'])
+    print(url)
     print('success')
 
 @bot.command(name='dank', help='sends you a dank-meme')
@@ -148,6 +151,7 @@ async def meme(ctx):
     author = rdata['author']
     await ctx.send(f'I found this on {subreddit} from {author}:')
     await ctx.send(rdata['url'])
+    print(url)
     print('success')
 
 
