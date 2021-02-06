@@ -27,8 +27,8 @@ bot = commands.Bot(command_prefix='+')
 
 iserv_online = False
 iserv_offline = False
-iserv_online_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-iserv_offline_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+iserv_online_time = datetime.now()
+iserv_offline_time = datetime.now()
 
 def debug():
     dateTimeObj = datetime.now()
@@ -171,20 +171,20 @@ async def iserv(ctx):
     global iserv_offline
     global iserv_offline_time
     if r.status_code == 200 and iserv_online == False:
-        iserv_online_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        iserv_online_time = datetime.now()
         iserv_online = True
         iserv_offline = False
         await ctx.send('IServ war nicht verfügbar, ist aber nun wieder verfügbar!')
     elif r.status_code == 200 and iserv_online == True:
-        time_difference = datetime.now().strftime("%Y-%m-%d %H:%M:%S") -  iserv_online_time
+        time_difference = datetime.now() -  iserv_online_time
         await ctx.send(f'IServ ist seit {time_difference} online!')
     elif r.status_code != 200 and iserv_offline == False:
-        iserv_offline_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        iserv_offline_time = datetime.now()
         iserv_offline = True
         iserv_online = False
         await ctx.send(f'Ich konnte IServ nicht erreichen, ich schreibe wenn ich IServ erreiche!')
     elif r.status_code != 200 and iserv_offline == True:
-        time_difference = datetime.now().strftime("%Y-%m-%d %H:%M:%S") -  iserv_offline_time
+        time_difference = datetime.now() -  iserv_offline_time
         await ctx.send(f'IServ ist seit {time_difference} nicht verfügbar!')
 
     print('success')
