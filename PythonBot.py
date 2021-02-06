@@ -26,6 +26,7 @@ mgr = owm.weather_manager()
 bot = commands.Bot(command_prefix='+')
 
 iserv_online = False
+iserv_online_time
 
 def debug():
     dateTimeObj = datetime.now()
@@ -164,6 +165,7 @@ async def iserv(ctx):
     r = requests.get('https://gbg-seelze.eu')
     print(r)
     global iserv_online
+    global iserv_online_time
     if r.status_code == 200 and iserv_online == False:
         iserv_online_time = datetime.now()
         iserv_online = True
