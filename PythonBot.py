@@ -163,6 +163,7 @@ async def iserv(ctx):
     print('contacting gbg-seelze.eu')
     r = requests.get('https://gbg-seelze.eu')
     print(r)
+    global iserv_online
     if r.status_code == 200 and iserv_online == False:
         iserv_online_time = datetime.now()
         iserv_online = True
