@@ -26,7 +26,7 @@ mgr = owm.weather_manager()
 bot = commands.Bot(command_prefix='+')
 
 iserv_online = False
-iserv_online_time
+iserv_online_time = datetime.now()
 
 def debug():
     dateTimeObj = datetime.now()
