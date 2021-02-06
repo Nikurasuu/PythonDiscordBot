@@ -166,11 +166,11 @@ async def iserv(ctx):
     print(r)
     global iserv_online
     global iserv_online_time
-    if r.status_code == 200 and iserv_online == False:
+    if r.status_code == 404 and iserv_online == False:
         iserv_online_time = datetime.now()
         iserv_online = True
         await ctx.send('IServ war nicht verfügbar, ist aber nun wieder verfügbar!')
-    elif r.status_code == 200 and iserv_online == True:
+    elif r.status_code == 404 and iserv_online == True:
         time_difference = datetime.now() -  iserv_online_time
         await ctx.send(f'IServ ist seit {time_difference} online!')
     else:
