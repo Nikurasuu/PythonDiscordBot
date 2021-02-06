@@ -182,8 +182,6 @@ async def iserv(ctx):
         iserv_offline_time = datetime.now()
         iserv_offline = True
         iserv_online = False
-        while True:
-            print('test')
         await ctx.send(f'Ich konnte IServ nicht erreichen, ich schreibe wenn ich IServ erreiche!')
     elif r.status_code == 200 and iserv_offline == True:
         time_difference = datetime.now() -  iserv_offline_time
