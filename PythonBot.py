@@ -186,8 +186,11 @@ async def iserv(ctx):
     elif r.status_code != 200 and iserv_offline == True:
         time_difference = datetime.now() -  iserv_offline_time
         await ctx.send(f'IServ ist seit {time_difference} nicht verfügbar!')
-
     print('success')
+
+@bot.event
+async def on_command_error(ctx, error):
+    await ctx.send(f"An error occured: {str(error)}")
 
 
 bot.run(TOKEN)
