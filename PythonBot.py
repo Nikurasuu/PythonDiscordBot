@@ -190,6 +190,16 @@ async def createUser(ctx):
     debug(ctx)
     await ctx.send(f'Creating a user for {ctx.author.name} in the Maki database..')
 
+    #Check if the discord user id is already in the database
+
+    mycursor = mydb.cursor()
+    mycursor.execute(f"SELECT discord_id FROM Users WHERE discord_id = {ctx.author.id})
+
+    checkUser = mycursor.fetchall()
+
+    if checkUser == []:
+        print('passed vibecheck')
+
     mycursor = mydb.cursor()
 
     sqlFormula = "INSERT INTO Users (discord_id, balance, date_joined) VALUES (%s, %s, %s)"
