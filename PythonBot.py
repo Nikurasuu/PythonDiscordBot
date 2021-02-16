@@ -29,7 +29,8 @@ bot = commands.Bot(command_prefix='+')
 def debug(ctx):
     dateTimeObj = datetime.now()
     user = ctx.author.id
-    print(f'{dateTimeObj}: responding {user}')
+    username = ctx.author.name
+    print(f'{dateTimeObj}: responding {username}({user})')
 
 
 @bot.event
@@ -39,20 +40,20 @@ async def on_ready():
     
 @bot.command(name='github', help='Shows you the source-code of this bot')
 async def github(ctx):
-    debug()
+    debug(ctx)
     response = "https://github.com/Nikurasuu/PythonDiscordBot"
     await ctx.send(response)
 
 @bot.command(name='rolldice', help='Rolls a dice for you (+rolldice [amount] [sides])')
 async def roll(ctx, number_of_dice: int, number_of_sides: int):
-    debug()
+    debug(ctx)
     for _ in range(number_of_dice):
         rolled_number = random.randint(1,number_of_sides)
         await ctx.send(f'rolled: {rolled_number}')
 
 @bot.command(name='isitokay', help="Helps you make decisions, that you can't make.")
 async def isitokay(ctx):
-    debug()
+    debug(ctx)
     if random.randint(1,2) == 1:
         await ctx.send('Yes it is ٩(◕‿◕｡)۶')
     else:
@@ -60,18 +61,18 @@ async def isitokay(ctx):
 
 @bot.command(name='magic', help='Shows you some magic ✧')
 async def magic(ctx):
-    debug()
+    debug(ctx)
     await ctx.send('(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧')
 
 @bot.command(name='fact', help='Shows you a random fact from the internet ☆ﾐ(o*･ω･)ﾉ')
 async def fact(ctx):
-    debug()
+    debug(ctx)
     await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
     await ctx.send(randfacts.getFact())
 
 @bot.command(name='join', help='joins your channel, so you are not that lonely.')
 async def join(ctx):
-    debug()
+    debug(ctx)
     channel = ctx.author.voice.channel
     print(f'joined {channel}')
     await channel.connect()
@@ -79,7 +80,7 @@ async def join(ctx):
 
 @bot.command(name='leave', help='disconnects from your channel.')
 async def leave(ctx):
-    debug()
+    debug(ctx)
     channel = ctx.author.voice.channel
     print(f'leaving {channel}')
     await ctx.voice_client.disconnect()
@@ -87,7 +88,7 @@ async def leave(ctx):
 
 @bot.command(name='weather', help='Tells you the weather (+weather [location])')
 async def weather(ctx, location: str):
-    debug()
+    debug(ctx)
     print('contacting api.openweathermap.org')
     await ctx.send(f'The weather in {location}:')
     observation = mgr.weather_at_place(location)
@@ -102,7 +103,7 @@ async def weather(ctx, location: str):
 
 @bot.command(name='w2g', help="creates a watch2gether room for you (+w2g [video-link])")
 async def w2g(ctx, link=''):
-    debug()
+    debug(ctx)
     print('contacting w2g.tv/rooms/create.json')
     await ctx.send('creating a room for you:')
     r = requests.post('https://w2g.tv/rooms/create.json', json={"w2g_api_key": W2G_TOKEN, "share": link})
@@ -120,7 +121,7 @@ async def w2g(ctx, link=''):
 
 @bot.command(name='me_irl', help='sends a meme from me_irl subreddit')
 async def meme(ctx):
-    debug()
+    debug(ctx)
     print('contacting meme-api.herokuapp.com/gimme/me_irl')
     r = requests.get('https://meme-api.herokuapp.com/gimme/me_irl')
     rdata = json.loads(r.text)
@@ -146,7 +147,7 @@ async def meme(ctx):
 
 @bot.command(name='dank', help='sends you a dank-meme')
 async def meme(ctx):
-    debug()
+    debug(ctx)
     print('contacting meme-api.herokuapp.com/gimme/dankmemes')
     r = requests.get('https://meme-api.herokuapp.com/gimme/dankmemes')
     rdata = json.loads(r.text)
@@ -159,6 +160,8 @@ async def meme(ctx):
 
 @bot.event
 async def on_command_error(ctx, error):
+    debug(ctx)
+    println(f"with error: {error}")
     await ctx.send(f"An error occured: {str(error)}")
 
 
