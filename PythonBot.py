@@ -188,27 +188,21 @@ async def servers(ctx):
 @bot.command(name='createuser', help='Creates a User in the Maki-Network! (wip)')
 async def createUser(ctx):
     debug(ctx)
-    await ctx.send(f'Creating a user for {ctx.author.name} in the Maki database..')
+    await ctx.send(f'Creating a user for {ctx.author.name} in the Maki-database..')
 
     #Check if the discord user id is already in the database
-
     mycursor = mydb.cursor()
     mycursor.execute(f"SELECT discord_id FROM Users WHERE discord_id = {ctx.author.id}")
-
     checkUser = mycursor.fetchall()
 
     if checkUser == []:
-        print('passed vibecheck')
+        mycursor = mydb.cursor()
+        mycursor.execute(f"INSERT INTO Users (discord_id, balance, date_joined) VALUES ({ctx.author.id}, {100}, {time.time()})")
+        mydb.commit()
+        await ctx.send(f'Succesfully created user!')
+    else:
+        await.ctx.send(f'You already have a user in the Maki-database')
 
-    mycursor = mydb.cursor()
-    #sqlFormula = "INSERT INTO Users (discord_id, balance, date_joined) VALUES (%s, %s, %s)"
-    #data = (ctx.author.id, 100, time.time())
-
-    mycursor.execute(f"INSERT INTO Users (discord_id, balance, date_joined) VALUES ({ctx.author.id}, {100}, {time.time()})")
-
-    mydb.commit()
-
-    await ctx.send(f'Succesfully created user!')
 
 @bot.event
 async def on_command_error(ctx, error):
