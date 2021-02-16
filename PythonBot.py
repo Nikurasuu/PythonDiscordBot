@@ -9,6 +9,7 @@ from pyowm import OWM
 from pyowm.utils import config
 from pyowm.utils import timestamps
 import mysql.connector
+import time
 print('imported all libraries!')
 print('trying to connect to discord.')
 
@@ -191,8 +192,8 @@ async def createUser(ctx):
 
     mycursor = mydb.cursor()
 
-    sqlFormula = "INSERT INTO Users (discord_id, balance, date_joined) VALUES (%s, %s, '%s')"
-    data = (ctx.author.id, 100, datetime.now())
+    sqlFormula = "INSERT INTO Users (discord_id, balance, date_joined) VALUES (%s, %s, %s)"
+    data = (ctx.author.id, 100, time.time())
 
     mycursor.execute(sqlFormula, data)
 
