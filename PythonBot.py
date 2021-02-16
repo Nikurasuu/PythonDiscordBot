@@ -199,9 +199,9 @@ async def createUser(ctx):
         mycursor = mydb.cursor(buffered=True)
         mycursor.execute(f"INSERT INTO Users (discord_id, balance, date_joined) VALUES ({ctx.author.id}, {100}, {time.time()})")
         mydb.commit()
-        await ctx.send(f'Succesfully created user!')
+        await ctx.send(f'Succesfully created your user. Welcome to the Maki-network! ＼(⌒▽⌒)')
     else:
-        await ctx.send(f'You already have a user in the Maki-database')
+        await ctx.send(f'User with your Discord-ID already exists in the database. ｡ﾟ･ (>﹏<) ･ﾟ｡')
 
 @bot.command(name='balance', help='Shows you your balance in the Maki-database.')
 async def balance(ctx):
@@ -217,9 +217,9 @@ async def balance(ctx):
         if balance == []:
             await ctx.send("Seems like you don't have a user in the Maki-database: create one with +createuser")
         else:
-            await ctx.send(f'Your balance is {balance} coins.')
+            await ctx.send(f'Your balance is {balance} coins. ')
     except:
-        await ctx.send('Error occured: try "+createuser"!')
+        await ctx.send('Error occured:  try "+createuser"! (×﹏×)')
     
 
 
@@ -227,8 +227,8 @@ async def balance(ctx):
 @bot.event
 async def on_command_error(ctx, error):
     debug(ctx)
-    print(f"with error: {error}")
-    await ctx.send(f"An error occured: {str(error)}")
+    print(f"An error occured: {error}")
+    await ctx.send(f"An error occured: {str(error)} (×﹏×)")
 
 
 bot.run(TOKEN)
