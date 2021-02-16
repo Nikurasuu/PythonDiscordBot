@@ -29,7 +29,7 @@ help_command = commands.DefaultHelpCommand(
     no_category = 'Commands'
 )
 
-bot = commands.Bot(command_prefix='+',  description = description, help_command = help_command)
+bot = commands.Bot(command_prefix='+', help_command = help_command)
 
 
 
