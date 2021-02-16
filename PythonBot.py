@@ -42,6 +42,7 @@ async def on_ready():
     activeservers = bot.guilds
     for guild in activeservers:
         print(guild.name)
+        global connectedServers
         connectedServers += 1
     print(f'currently connected to: {connectedServers}!')
 
