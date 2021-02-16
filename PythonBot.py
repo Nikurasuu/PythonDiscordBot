@@ -25,7 +25,7 @@ mgr = owm.weather_manager()
 
 bot = commands.Bot(command_prefix='+')
 
-int connectedServers = 0
+connectedServers = 0
 
 
 def debug(ctx):
