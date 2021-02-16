@@ -189,6 +189,7 @@ async def servers(ctx):
 async def createUser(ctx):
     debug(ctx)
     await ctx.send(f'Creating a user for {ctx.author.name} in the Maki-database..')
+    global mydb
 
     #Check if the discord user id is already in the database
     checkUser = []
