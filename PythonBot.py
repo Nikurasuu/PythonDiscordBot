@@ -191,8 +191,8 @@ async def createUser(ctx):
 
     mycursor = mydb.cursor()
 
-    sqlFormula = "INSERT INTO Users (discord_id, balance, date_joined) VALUES (%s, %s, %s)"
-    data = (ctx.author.id, 100, int(datetime.now()))
+    sqlFormula = "INSERT INTO Users (discord_id, balance, date_joined) VALUES (%s, %s, '%s')"
+    data = (ctx.author.id, 100, datetime.now())
 
     mycursor.execute(sqlFormula, data)
 
