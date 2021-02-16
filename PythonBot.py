@@ -215,7 +215,7 @@ async def balance(ctx):
     if balance == []:
         await ctx.send("Seems like you don't have a user in the Maki-database: create one with +createuser")
     else:
-        await.ctx.send(f'Your balance is {balance} coins.')
+        await ctx.send(f'Your balance is {balance} coins.')
 
 
 
