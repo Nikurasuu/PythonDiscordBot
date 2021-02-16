@@ -8,6 +8,7 @@ import json
 from pyowm import OWM
 from pyowm.utils import config
 from pyowm.utils import timestamps
+import mysql.connector
 print('imported all libraries!')
 print('trying to connect to discord.')
 
@@ -21,6 +22,15 @@ W2G_TOKEN = os.getenv('W2G_TOKEN')
 OWM_TOKEN = os.getenv('OWM_TOKEN')
 owm = OWM(OWM_TOKEN)
 mgr = owm.weather_manager()
+
+mydb = mysql.connector.connect(
+    host='localhost',
+    user="Maki",
+    passwd="Maki",
+    database="PythonBot"
+)
+
+print(mydb)
 
 connectedServers = 0
 
@@ -173,6 +183,11 @@ async def servers(ctx):
     debug(ctx)
     await ctx.send('https://forms.gle/qydSqZad57PvGNL79')
     await ctx.send('Thank you! (´｡• ᵕ •｡`) ♡')
+
+@bot.command(name='createuser', help='Creates a User in the Maki-Network!')
+async def createUser(ctx):
+    debug(ctx)
+    await ctx.send(f'Creating a User for {ctx.author.id} in the Maki database..')
 
 @bot.event
 async def on_command_error(ctx, error):
