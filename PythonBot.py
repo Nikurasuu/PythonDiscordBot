@@ -28,7 +28,8 @@ bot = commands.Bot(command_prefix='+')
 
 def debug():
     dateTimeObj = datetime.now()
-    user = message.author.id
+    #user = message.author.id
+    user = undefined
     print(f'{dateTimeObj}: responding {user}')
 
 
@@ -65,9 +66,7 @@ async def magic(ctx):
 
 @bot.command(name='fact', help='Shows you a random fact from the internet ☆ﾐ(o*･ω･)ﾉ')
 async def fact(ctx):
-    dateTimeObj = datetime.now()
-    user = message.author.id
-    print(f'{dateTimeObj}: responding {user}')
+    debug()
     await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
     await ctx.send(randfacts.getFact())
 
