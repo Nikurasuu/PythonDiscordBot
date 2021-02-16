@@ -170,6 +170,11 @@ async def meme(ctx):
 async def servers(ctx):
     debug(ctx)
     global connectedServers
+    connectedServers = 0
+    activeservers = bot.guilds
+    for guild in activeservers:
+        #print(guild.name)
+        connectedServers += 1
     await ctx.send(f'currently connected to {connectedServers} servers!')
 
 @bot.event
