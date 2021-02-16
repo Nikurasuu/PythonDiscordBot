@@ -194,7 +194,6 @@ async def createUser(ctx):
     checkUser = []
     mycursor = mydb.cursor()
     mycursor.execute(f"SELECT discord_id FROM Users WHERE discord_id = {ctx.author.id}")
-    mydb.commit()
     checkUser = mycursor.fetchall()
     print(checkUser)
     if checkUser == []:
