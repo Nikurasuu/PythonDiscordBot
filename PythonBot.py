@@ -192,7 +192,7 @@ async def createUser(ctx):
 
     #Check if the discord user id is already in the database
     checkUser = []
-    mycursor = mydb.cursor()
+    mycursor = mydb.cursor(buffered=True)
     mycursor.execute(f"SELECT id FROM Users WHERE discord_id = {ctx.author.id}")
     mydb.commit()
     checkUser = mycursor.fetchall()
