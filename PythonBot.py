@@ -191,6 +191,7 @@ async def createUser(ctx):
     await ctx.send(f'Creating a user for {ctx.author.name} in the Maki-database..')
 
     #Check if the discord user id is already in the database
+    checkUser = []
     mycursor = mydb.cursor()
     mycursor.execute(f"SELECT discord_id FROM Users WHERE discord_id = {ctx.author.id}")
     checkUser = mycursor.fetchall()
