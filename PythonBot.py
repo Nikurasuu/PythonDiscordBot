@@ -37,7 +37,7 @@ def debug(ctx):
 async def on_ready():
     print('connected and running!')
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="+help"))
-    activeservers = client.guilds
+    activeservers = bot.guilds
     for guild in activeservers:
         print(guild.name)
     
