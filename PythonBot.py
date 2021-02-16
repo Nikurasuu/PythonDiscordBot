@@ -129,7 +129,7 @@ async def w2g(ctx, link=''):
         print('success')
     
 
-@bot.command(name='me_irl', help='Sends a meme from me_irl subreddit')
+@bot.command(name='meirl', help='Sends a meme from me_irl subreddit')
 async def meme(ctx):
     debug(ctx)
     print('contacting meme-api.herokuapp.com/gimme/me_irl')
