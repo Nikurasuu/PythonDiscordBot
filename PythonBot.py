@@ -161,7 +161,7 @@ async def meme(ctx):
 @bot.event
 async def on_command_error(ctx, error):
     debug(ctx)
-    println(f"with error: {error}")
+    print(f"with error: {error}")
     await ctx.send(f"An error occured: {str(error)}")
 
 
