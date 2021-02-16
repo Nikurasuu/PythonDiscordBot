@@ -187,7 +187,18 @@ async def servers(ctx):
 @bot.command(name='createuser', help='Creates a User in the Maki-Network!')
 async def createUser(ctx):
     debug(ctx)
-    await ctx.send(f'Creating a User for {ctx.author.id} in the Maki database..')
+    await ctx.send(f'Creating a user for {ctx.author.id} in the Maki database..')
+
+    mycursor = mydb.cursor()
+
+    sqlFormula = "INSERT INTO Users (discord_id, balance, date_joined) VALUES (%s, %s, %s)"
+    data = (ctx.author.id, 100, datetime.now())
+
+    mycursor.execute(sqlFormula, data)
+
+    mydb.commit()
+
+    await ctx.send(f'Succesfully created user!')
 
 @bot.event
 async def on_command_error(ctx, error):
