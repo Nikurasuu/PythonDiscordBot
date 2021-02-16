@@ -201,11 +201,10 @@ async def createUser(ctx):
         print('passed vibecheck')
 
     mycursor = mydb.cursor()
+    #sqlFormula = "INSERT INTO Users (discord_id, balance, date_joined) VALUES (%s, %s, %s)"
+    #data = (ctx.author.id, 100, time.time())
 
-    sqlFormula = "INSERT INTO Users (discord_id, balance, date_joined) VALUES (%s, %s, %s)"
-    data = (ctx.author.id, 100, time.time())
-
-    mycursor.execute(sqlFormula, data)
+    mycursor.execute(f"INSERT INTO Users (discord_id, balance, date_joined) VALUES ({ctx.author.id}, {100}, {time.time()})")
 
     mydb.commit()
 
