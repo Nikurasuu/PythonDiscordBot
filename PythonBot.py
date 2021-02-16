@@ -191,20 +191,32 @@ async def createUser(ctx):
     await ctx.send(f'Creating a user for {ctx.author.name} in the Maki-database..')
 
     #Check if the discord user id is already in the database
-    checkUser = []
     mycursor = mydb.cursor(buffered=True)
     mycursor.execute(f"SELECT id FROM Users WHERE discord_id = {ctx.author.id}")
     mydb.commit()
     checkUser = mycursor.fetchall()
-
-    print(checkUser)
     if checkUser == []:
-        mycursor = mydb.cursor()
+        mycursor = mydb.cursor(buffered=True)
         mycursor.execute(f"INSERT INTO Users (discord_id, balance, date_joined) VALUES ({ctx.author.id}, {100}, {time.time()})")
         mydb.commit()
         await ctx.send(f'Succesfully created user!')
     else:
         await ctx.send(f'You already have a user in the Maki-database')
+
+@bot.command(name='balance', help='Shows you your balance in the Maki-database.')
+async def balance(ctx):
+    debug(ctx)
+
+    #Check Balance
+    mycursor = mydb.cursor(buffered=True)
+    mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {ctx.author.id}')
+    mydb.commit()
+    balance = mycursor.fetchall()
+    if balance == []:
+        await ctx.send("Seems like you don't have a user in the Maki-database: create one with +createuser")
+    else:
+        await.ctx.send(f'Your balance is {balance} coins.')
+
 
 
 @bot.event
