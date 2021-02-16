@@ -29,7 +29,7 @@ bot = commands.Bot(command_prefix='+')
 def debug():
     dateTimeObj = datetime.now()
     #user = message.author.id
-    user = undefined
+    user = "undefined"
     print(f'{dateTimeObj}: responding {user}')
 
 
