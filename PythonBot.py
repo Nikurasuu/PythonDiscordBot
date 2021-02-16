@@ -133,7 +133,7 @@ async def meme(ctx):
 
 @bot.command(name='wholesome', help='sends you a wholesome meme')
 async def meme(ctx):
-    debug()
+    debug(ctx)
     print('contacting meme-api.herokuapp.com/gimme/wholesomememes')
     r = requests.get('https://meme-api.herokuapp.com/gimme/wholesomememes')
     rdata = json.loads(r.text)
