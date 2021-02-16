@@ -26,10 +26,9 @@ mgr = owm.weather_manager()
 bot = commands.Bot(command_prefix='+')
 
 
-def debug():
+def debug(ctx):
     dateTimeObj = datetime.now()
-    #user = message.author.id
-    user = "undefined"
+    user = ctx.author.id
     print(f'{dateTimeObj}: responding {user}')
 
 
