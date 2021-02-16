@@ -193,7 +193,7 @@ async def createUser(ctx):
     #Check if the discord user id is already in the database
     checkUser = []
     mycursor = mydb.cursor()
-    mycursor.execute(f"SELECT discord_id FROM Users WHERE discord_id = {ctx.author.id}")
+    mycursor.execute(f"SELECT id FROM Users WHERE discord_id = {ctx.author.id}")
     checkUser = mycursor.fetchall()
     print(checkUser)
     if checkUser == []:
