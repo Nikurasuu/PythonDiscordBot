@@ -85,22 +85,6 @@ async def fact(ctx):
     await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
     await ctx.send(randfacts.getFact())
 
-@bot.command(name='join', help='Joins your channel, so that you are not that lonely.')
-async def join(ctx):
-    debug(ctx)
-    channel = ctx.author.voice.channel
-    print(f'joined {channel}')
-    await channel.connect()
-    await ctx.send('٩(◕‿◕｡)۶')
-
-@bot.command(name='leave', help='Disconnects from your channel.')
-async def leave(ctx):
-    debug(ctx)
-    channel = ctx.author.voice.channel
-    print(f'leaving {channel}')
-    await ctx.voice_client.disconnect()
-    await ctx.send('(｡•́︿•̀｡)')
-
 @bot.command(name='weather', help='Tells you the weather (+weather [location])')
 async def weather(ctx, location: str):
     debug(ctx)
