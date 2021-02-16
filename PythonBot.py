@@ -189,14 +189,14 @@ async def servers(ctx):
 async def createUser(ctx):
     debug(ctx)
     await ctx.send(f'Creating a user for {ctx.author.name} in the Maki-database..')
-    
-    mydb.autocommit()
 
     #Check if the discord user id is already in the database
     checkUser = []
     mycursor = mydb.cursor()
     mycursor.execute(f"SELECT id FROM Users WHERE discord_id = {ctx.author.id}")
+    mydb.commit()
     checkUser = mycursor.fetchall()
+
     print(checkUser)
     if checkUser == []:
         mycursor = mydb.cursor()
