@@ -184,6 +184,12 @@ async def servers(ctx):
         connectedServers += 1
     await ctx.send(f'currently connected to {connectedServers} servers!')
 
+@bot.command(name='feedback', help='Sends you a link where you can give feedback to Maki!')
+async def servers(ctx):
+    debug(ctx)
+    await ctx.send('https://forms.gle/qydSqZad57PvGNL79')
+    await ctx.send('Thank you! (´｡• ᵕ •｡`) ♡')
+
 @bot.event
 async def on_command_error(ctx, error):
     debug(ctx)
