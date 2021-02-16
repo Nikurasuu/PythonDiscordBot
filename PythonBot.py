@@ -130,7 +130,7 @@ async def w2g(ctx, link=''):
     
 
 @bot.command(name='meirl', help='Sends a meme from me_irl subreddit')
-async def meme(ctx):
+async def meirl(ctx):
     debug(ctx)
     print('contacting meme-api.herokuapp.com/gimme/me_irl')
     r = requests.get('https://meme-api.herokuapp.com/gimme/me_irl')
@@ -143,7 +143,7 @@ async def meme(ctx):
     print('success')
 
 @bot.command(name='wholesome', help='Sends you a wholesome meme')
-async def meme(ctx):
+async def wholesome(ctx):
     debug(ctx)
     print('contacting meme-api.herokuapp.com/gimme/wholesomememes')
     r = requests.get('https://meme-api.herokuapp.com/gimme/wholesomememes')
@@ -156,7 +156,7 @@ async def meme(ctx):
     print('success')
 
 @bot.command(name='dank', help='Sends you a dank-meme')
-async def meme(ctx):
+async def dank(ctx):
     debug(ctx)
     print('contacting meme-api.herokuapp.com/gimme/dankmemes')
     r = requests.get('https://meme-api.herokuapp.com/gimme/dankmemes')
@@ -180,7 +180,7 @@ async def servers(ctx):
     await ctx.send(f'currently connected to {connectedServers} servers!')
 
 @bot.command(name='feedback', help='Sends you a link where you can give feedback to Maki!')
-async def servers(ctx):
+async def feedback(ctx):
     debug(ctx)
     await ctx.send('https://forms.gle/qydSqZad57PvGNL79')
     await ctx.send('Thank you! (´｡• ᵕ •｡`) ♡')
