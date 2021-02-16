@@ -85,7 +85,7 @@ async def fact(ctx):
     await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
     await ctx.send(randfacts.getFact())
 
-@bot.command(name='join', help='Joins your channel, so you are not that lonely.')
+@bot.command(name='join', help='Joins your channel, so that you are not that lonely.')
 async def join(ctx):
     debug(ctx)
     channel = ctx.author.voice.channel
