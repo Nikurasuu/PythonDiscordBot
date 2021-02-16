@@ -166,6 +166,12 @@ async def meme(ctx):
     print(rdata['url'])
     print('success')
 
+@bot.command(name='servers', help='shows you how many servers the bot is connected to')
+async def servers(ctx):
+    debug(ctx)
+    global connectedServers
+    await ctx.send(f'currently connected to {connectedServers} servers!')
+
 @bot.event
 async def on_command_error(ctx, error):
     debug(ctx)
