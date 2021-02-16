@@ -184,15 +184,15 @@ async def servers(ctx):
     await ctx.send('https://forms.gle/qydSqZad57PvGNL79')
     await ctx.send('Thank you! (´｡• ᵕ •｡`) ♡')
 
-@bot.command(name='createuser', help='Creates a User in the Maki-Network!')
+@bot.command(name='createuser', help='Creates a User in the Maki-Network! (wip)')
 async def createUser(ctx):
     debug(ctx)
-    await ctx.send(f'Creating a user for {ctx.author.id} in the Maki database..')
+    await ctx.send(f'Creating a user for {ctx.author.name} in the Maki database..')
 
     mycursor = mydb.cursor()
 
     sqlFormula = "INSERT INTO Users (discord_id, balance, date_joined) VALUES (%s, %s, %s)"
-    data = (ctx.author.id, 100, datetime.now())
+    data = (ctx.author.id, 100, int(datetime.now()))
 
     mycursor.execute(sqlFormula, data)
 
