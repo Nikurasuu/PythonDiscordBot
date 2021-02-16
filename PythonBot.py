@@ -38,8 +38,8 @@ async def on_ready():
     print('connected and running!')
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="+help"))
     activeservers = client.guilds
-        for guild in activeservers:
-            print(guild.name)
+    for guild in activeservers:
+        print(guild.name)
     
 @bot.command(name='github', help='Shows you the source-code of this bot')
 async def github(ctx):
