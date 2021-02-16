@@ -201,7 +201,7 @@ async def createUser(ctx):
         mydb.commit()
         await ctx.send(f'Succesfully created user!')
     else:
-        await.ctx.send(f'You already have a user in the Maki-database')
+        await ctx.send(f'You already have a user in the Maki-database')
 
 
 @bot.event
