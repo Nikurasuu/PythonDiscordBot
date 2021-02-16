@@ -194,9 +194,9 @@ async def createUser(ctx):
     checkUser = []
     mycursor = mydb.cursor()
     mycursor.execute(f"SELECT discord_id FROM Users WHERE discord_id = {ctx.author.id}")
+    mydb.commit()
     checkUser = mycursor.fetchall()
     print(checkUser)
-
     if checkUser == []:
         mycursor = mydb.cursor()
         mycursor.execute(f"INSERT INTO Users (discord_id, balance, date_joined) VALUES ({ctx.author.id}, {100}, {time.time()})")
