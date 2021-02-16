@@ -22,9 +22,16 @@ OWM_TOKEN = os.getenv('OWM_TOKEN')
 owm = OWM(OWM_TOKEN)
 mgr = owm.weather_manager()
 
-bot = commands.Bot(command_prefix='+')
-
 connectedServers = 0
+
+# Change only the no_category default string
+help_command = commands.DefaultHelpCommand(
+    no_category = 'Commands'
+)
+
+bot = commands.Bot(command_prefix='+',  description = description, help_command = help_command)
+
+
 
 
 def debug(ctx):
@@ -78,7 +85,7 @@ async def fact(ctx):
     await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
     await ctx.send(randfacts.getFact())
 
-@bot.command(name='join', help='joins your channel, so you are not that lonely.')
+@bot.command(name='join', help='Joins your channel, so you are not that lonely.')
 async def join(ctx):
     debug(ctx)
     channel = ctx.author.voice.channel
@@ -86,7 +93,7 @@ async def join(ctx):
     await channel.connect()
     await ctx.send('٩(◕‿◕｡)۶')
 
-@bot.command(name='leave', help='disconnects from your channel.')
+@bot.command(name='leave', help='Disconnects from your channel.')
 async def leave(ctx):
     debug(ctx)
     channel = ctx.author.voice.channel
@@ -109,7 +116,7 @@ async def weather(ctx, location: str):
     await ctx.send(f'Temperature right now: {temp} celsius')
     await ctx.send(f'Today are at least {tempmin} celsius and it should get up to {tempmax} celsius!')
 
-@bot.command(name='w2g', help="creates a watch2gether room for you (+w2g [video-link])")
+@bot.command(name='w2g', help="Creates a watch2gether room for you (+w2g [video-link])")
 async def w2g(ctx, link=''):
     debug(ctx)
     print('contacting w2g.tv/rooms/create.json')
@@ -127,7 +134,7 @@ async def w2g(ctx, link=''):
         print('success')
     
 
-@bot.command(name='me_irl', help='sends a meme from me_irl subreddit')
+@bot.command(name='me_irl', help='Sends a meme from me_irl subreddit')
 async def meme(ctx):
     debug(ctx)
     print('contacting meme-api.herokuapp.com/gimme/me_irl')
@@ -140,7 +147,7 @@ async def meme(ctx):
     print(rdata['url'])
     print('success')
 
-@bot.command(name='wholesome', help='sends you a wholesome meme')
+@bot.command(name='wholesome', help='Sends you a wholesome meme')
 async def meme(ctx):
     debug(ctx)
     print('contacting meme-api.herokuapp.com/gimme/wholesomememes')
@@ -153,7 +160,7 @@ async def meme(ctx):
     print(rdata['url'])
     print('success')
 
-@bot.command(name='dank', help='sends you a dank-meme')
+@bot.command(name='dank', help='Sends you a dank-meme')
 async def meme(ctx):
     debug(ctx)
     print('contacting meme-api.herokuapp.com/gimme/dankmemes')
@@ -166,7 +173,7 @@ async def meme(ctx):
     print(rdata['url'])
     print('success')
 
-@bot.command(name='servers', help='shows you how many servers the bot is connected to')
+@bot.command(name='servers', help='Shows you how many servers the bot is connected to')
 async def servers(ctx):
     debug(ctx)
     global connectedServers
