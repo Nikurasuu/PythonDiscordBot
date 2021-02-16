@@ -25,6 +25,8 @@ mgr = owm.weather_manager()
 
 bot = commands.Bot(command_prefix='+')
 
+int connectedServers = 0
+
 
 def debug(ctx):
     dateTimeObj = datetime.now()
@@ -40,6 +42,9 @@ async def on_ready():
     activeservers = bot.guilds
     for guild in activeservers:
         print(guild.name)
+        connectedServers += 1
+    print(f'currently connected to: {connectedServers}!')
+
     
 @bot.command(name='github', help='Shows you the source-code of this bot')
 async def github(ctx):
