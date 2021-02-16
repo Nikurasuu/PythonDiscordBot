@@ -28,7 +28,8 @@ bot = commands.Bot(command_prefix='+')
 
 def debug():
     dateTimeObj = datetime.now()
-    print(f'responding {dateTimeObj}')
+    user = message.author.id
+    print(f'{dateTimeObj}: responding {user}')
 
 
 @bot.event
