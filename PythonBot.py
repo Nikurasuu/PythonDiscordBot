@@ -41,10 +41,11 @@ async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="+help"))
     activeservers = bot.guilds
     for guild in activeservers:
-        print(guild.name)
+        #print(guild.name)
         global connectedServers
         connectedServers += 1
-    print(f'currently connected to: {connectedServers}!')
+    print(f'currently connected to: {connectedServers} servers!')
+    print("------------------")
 
     
 @bot.command(name='github', help='Shows you the source-code of this bot')
