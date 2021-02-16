@@ -45,7 +45,6 @@ async def on_ready():
         global connectedServers
         connectedServers += 1
     print(f'currently connected to: {connectedServers} servers!')
-    print("-----------------------------------------------------")
 
     
 @bot.command(name='github', help='Shows you the source-code of this bot')
