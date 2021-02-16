@@ -193,7 +193,7 @@ async def createUser(ctx):
     mycursor = mydb.cursor()
 
     sqlFormula = "INSERT INTO Users (discord_id, balance, date_joined) VALUES (%s, %s, %s)"
-    data = (ctx.author.id, 100, date_joined))
+    data = (ctx.author.id, 100, date_joined)
 
     mycursor.execute(sqlFormula, data)
 
