@@ -211,14 +211,16 @@ async def balance(ctx):
     mycursor = mydb.cursor(buffered=True)
     mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {ctx.author.id}')
     mydb.commit()
+
     try:
         balance = mycursor.fetchone()[0]
+        if balance == []:
+            await ctx.send("Seems like you don't have a user in the Maki-database: create one with +createuser")
+        else:
+            await ctx.send(f'Your balance is {balance} coins.')
     except:
-        await ctx.send('No user found, try "+createuser"!')
-    if balance == []:
-        await ctx.send("Seems like you don't have a user in the Maki-database: create one with +createuser")
-    else:
-        await ctx.send(f'Your balance is {balance} coins.')
+        await ctx.send('Error occured: try "+createuser"!')
+    
 
 
 
