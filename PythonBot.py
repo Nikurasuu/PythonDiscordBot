@@ -211,7 +211,7 @@ async def balance(ctx):
     mycursor = mydb.cursor(buffered=True)
     mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {ctx.author.id}')
     mydb.commit()
-    balance = mycursor.fetchall()
+    balance = mycursor.fetch('balance')
     if balance == []:
         await ctx.send("Seems like you don't have a user in the Maki-database: create one with +createuser")
     else:
