@@ -90,9 +90,12 @@ async def github(ctx):
 @bot.command(name='rolldice', help='Rolls a dice for you (rolldice [amount] [sides])')
 async def roll(ctx, number_of_dice: int, number_of_sides: int):
     debug(ctx)
-    for _ in range(number_of_dice):
-        rolled_number = random.randint(1,number_of_sides)
-        await ctx.send(f'rolled: {rolled_number}')
+    if number_of_dice < 6:
+        for _ in range(number_of_dice):
+            rolled_number = random.randint(1,number_of_sides)
+            await ctx.send(f'rolled: `{rolled_number}`')
+    else:
+        await ctx.send(f'Sorry you can only roll the dice up to `5` times!')
 
 @bot.command(name='isitokay', help="Helps you make decisions, that you can't make.")
 async def isitokay(ctx):
@@ -110,7 +113,7 @@ async def magic(ctx):
 @bot.command(name='fact', help='Shows you a random fact from the internet ☆ﾐ(o*･ω･)ﾉ')
 async def fact(ctx):
     debug(ctx)
-    await ctx.send(f'(⌒ω⌒)ﾉ okay here comes one: \n{randfacts.getFact()}')
+    await ctx.send(f'(⌒ω⌒)ﾉ okay here comes one: \n`{randfacts.getFact()}`')
 
 @bot.command(name='weather', help='Tells you the weather (weather [location])')
 async def weather(ctx, location: str):
@@ -123,7 +126,7 @@ async def weather(ctx, location: str):
     tempmin = temperature['temp_min']
     tempmax = temperature['temp_max']
     print('success')
-    await ctx.send(f'The weather in {location}: \nTemperature right now: {temp} celsius \nToday are at least {tempmin} celsius and it should get up to {tempmax} celsius!')
+    await ctx.send(f'The weather in `{location}`: \nTemperature right now: `{temp}` celsius \nToday are at least `{tempmin}` celsius and it should get up to {tempmax} celsius!')
 
 @bot.command(name='w2g', help="Creates a watch2gether room for you (w2g [video-link])")
 async def w2g(ctx, link=''):
@@ -149,7 +152,7 @@ async def meirl(ctx):
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
-    await ctx.send(f"I found this on {subreddit} from {author}: \n{rdata['url']}")
+    await ctx.send(f"I found this on `{subreddit}` from `{author}`: \n{rdata['url']}")
     print(rdata['url'])
     print('success')
 
@@ -161,7 +164,7 @@ async def wholesome(ctx):
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
-    await ctx.send(f"I found this on {subreddit} from {author}: \n{rdata['url']}")
+    await ctx.send(f"I found this on `{subreddit}` from `{author}`: \n{rdata['url']}")
     print(rdata['url'])
     print('success')
 
@@ -173,7 +176,7 @@ async def dank(ctx):
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
-    await ctx.send(f"I found this on {subreddit} from {author}: \n{rdata['url']}")
+    await ctx.send(f"I found this on `{subreddit}` from `{author}`: \n{rdata['url']}")
     print(rdata['url'])
     print('success')
 
@@ -183,7 +186,7 @@ async def servers(ctx):
     connectedServers = 0
     for i in bot.guilds:
         connectedServers += 1
-    await ctx.send(f'currently connected to {connectedServers} servers!')
+    await ctx.send(f'currently connected to `{connectedServers}` servers!')
 
 @bot.command(name='feedback', help='Sends you a link where you can give feedback to Maki!')
 async def feedback(ctx):
@@ -202,37 +205,36 @@ async def createUser(ctx):
         mycursor = mydb.cursor(buffered=True)
         mycursor.execute(f"INSERT INTO Users (discord_id, balance, date_joined) VALUES ({ctx.author.id}, {100}, {time.time()})")
         mydb.commit()
-        await ctx.send(f'Succesfully created your user. Welcome to the Maki-network! ＼(⌒▽⌒)')
+        await ctx.send(f'Succesfully created a user for `{ctx.author.name}`. \nWelcome to the Maki-network! ＼(⌒▽⌒)')
     else:
         await ctx.send(f'User with your Discord-ID already exists in the database. ｡ﾟ･ (>﹏<) ･ﾟ｡')
 
 @bot.command(name='userinfo', help='Gives you Information about your user on the Maki-database.')
 async def userinfo(ctx):
     debug(ctx)
-
     try:
         balance = getBalance(ctx.author.id)
         timestamp = getCreationDate(ctx.author.id)
         userid = getUserID(ctx.author.id)
-        await ctx.send(f'User: {ctx.author.name} \nUser-ID: {userid} \nDate created: {timestamp} \nBalance: {balance}')
+        await ctx.send(f'User: `{ctx.author.name}` \nUser-ID: `{userid}` \nDate created: `{timestamp}` \nBalance: `{balance} coins`')
     except:
-        await ctx.send(f'Could not find user for {ctx.author.name} (×﹏×)\n->   try "+createuser"!')
+        await ctx.send(f'Could not find user for `{ctx.author.name}` (×﹏×)\n->   try `+createuser`!')
 
 
 @bot.command(name='balance', help='Shows you your balance in the Maki-database.')
 async def balance(ctx):
     debug(ctx)
     try:
-        await ctx.send(f'Your balance is {getBalance(ctx.author.id)} coins. ')
+        await ctx.send(f'Your balance is `{getBalance(ctx.author.id)}` coins. ')
     except:
-        await ctx.send(f'Could not find balance for {ctx.author.name} (×﹏×)\n->   try "+createuser"!')
+        await ctx.send(f'Could not find balance for `{ctx.author.name}` (×﹏×)\n->   try `+createuser`!')
     
 
 @bot.event
 async def on_command_error(ctx, error):
     debug(ctx)
     print(f"An error occured: {error}")
-    await ctx.send(f"An error occured: {str(error)} (×﹏×)")
+    await ctx.send(f"An error occured: `{str(error)}` (×﹏×)")
 
 
 bot.run(TOKEN)
