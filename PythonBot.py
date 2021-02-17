@@ -41,7 +41,7 @@ help_command = commands.DefaultHelpCommand(
     no_category = 'Commands'
 )
 
-bot = commands.Bot(command_prefix='m!', help_command = help_command)
+bot = commands.Bot(command_prefix='+', help_command = help_command)
 
 
 
@@ -56,7 +56,7 @@ def debug(ctx):
 @bot.event
 async def on_ready():
     print('connected and running!')
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="m!help"))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="work-in-progress"))
     activeservers = bot.guilds
     for guild in activeservers:
         #print(guild.name)
