@@ -193,8 +193,6 @@ async def feedback(ctx):
 @bot.command(name='createuser', help='Creates a User in the Maki-Network! (wip)')
 async def createUser(ctx):
     debug(ctx)
-    await ctx.send(f'Creating a user for {ctx.author.name} in the Maki-database..')
-
     #Check if the discord user id is already in the database
     mycursor = mydb.cursor(buffered=True)
     mycursor.execute(f"SELECT id FROM Users WHERE discord_id = {ctx.author.id}")
