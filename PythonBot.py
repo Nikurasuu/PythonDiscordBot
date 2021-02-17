@@ -49,6 +49,25 @@ def debug(ctx):
     username = ctx.author.name
     print(f'{dateTimeObj}: responding {username}({user})')
 
+def getBalance(discordid):
+    mycursor = mydb.cursor(buffered=True)
+    mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {discordid}')
+    mydb.commit()
+    return mycursor.fetchone()[0]
+
+def getCreationDate(discordid):
+    mycursor = mydb.cursor(buffered=True)
+    mycursor.execute(f'SELECT date_joined FROM Users WHERE discord_id = {discordid}')
+    mydb.commit()
+    date_joined = mycursor.fetchone()[0]
+    return datetime.fromtimestamp(date_joined).strftime('%d-%m-%Y')
+
+def getUserID(discordid):
+    mycursor = mydb.cursor(buffered=True)
+    mycursor.execute(f'SELECT id FROM Users WHERE discord_id = {discordid}')
+    mydb.commit()
+    return mycursor.fetchone()[0]
+
 
 @bot.event
 async def on_ready():
@@ -197,21 +216,27 @@ async def createUser(ctx):
     else:
         await ctx.send(f'User with your Discord-ID already exists in the database. ｡ﾟ･ (>﹏<) ･ﾟ｡')
 
+@bot.command(name='userinfo', help='Gives you Information about your user on the Maki-database.')
+async def userinfo(ctx):
+    debug(ctx)
+    try:
+        balance = getBalance(ctx.author.id)
+        timestamp = getCreationDate(ctx.author.id)
+        userid = getUserID(ctx.author.id)
+        await ctx.send(f'User: {ctx.author.name} \nUser-ID: {userid} \nDate created: {timestamp} \nBalance: {balance}')
+    except:
+        await ctx.send(f'Could not find user for {ctx.author.name} (×﹏×)\n->   try "+createuser"!')
+
+
 @bot.command(name='balance', help='Shows you your balance in the Maki-database.')
 async def balance(ctx):
     debug(ctx)
-
-    #Check Balance
-    mycursor = mydb.cursor(buffered=True)
-    mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {ctx.author.id}')
-    mydb.commit()
-    
     try:
-        balance = mycursor.fetchone()[0]
-        await ctx.send(f'Your balance is {balance} coins. ')
+        await ctx.send(f'Your balance is {getBalance(ctx.author.id)} coins. ')
     except:
-        await ctx.send('Error occured:  try "+createuser"! (×﹏×)')
+        await ctx.send(f'Could not find balance for {ctx.author.name} (×﹏×)\n->   try "+createuser"!')
     
+
 @bot.event
 async def on_command_error(ctx, error):
     debug(ctx)
