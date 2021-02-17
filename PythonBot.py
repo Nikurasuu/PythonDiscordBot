@@ -1,4 +1,3 @@
-print('!work-in-progress!')
 import os
 import random
 import randfacts
@@ -41,6 +40,8 @@ help_command = commands.DefaultHelpCommand(
 )
 
 bot = commands.Bot(command_prefix='+', help_command = help_command)
+playingStatus='work-in-progress'
+print('!work-in-progress!')
 
 
 def debug(ctx):
@@ -72,7 +73,7 @@ def getUserID(discordid):
 @bot.event
 async def on_ready():
     print('connected and running!')
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="work-in-progress"))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=playingStatus))
     activeservers = bot.guilds
     for guild in activeservers:
         #print(guild.name)
@@ -84,8 +85,7 @@ async def on_ready():
 @bot.command(name='github', help='Shows you the source-code of this bot')
 async def github(ctx):
     debug(ctx)
-    response = "https://github.com/Nikurasuu/PythonDiscordBot"
-    await ctx.send(response)
+    await ctx.send('https://github.com/Nikurasuu/PythonDiscordBot')
 
 @bot.command(name='rolldice', help='Rolls a dice for you (rolldice [amount] [sides])')
 async def roll(ctx, number_of_dice: int, number_of_sides: int):
@@ -110,14 +110,12 @@ async def magic(ctx):
 @bot.command(name='fact', help='Shows you a random fact from the internet ☆ﾐ(o*･ω･)ﾉ')
 async def fact(ctx):
     debug(ctx)
-    await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
-    await ctx.send(randfacts.getFact())
+    await ctx.send(f'(⌒ω⌒)ﾉ okay here comes one: \n{randfacts.getFact()}')
 
 @bot.command(name='weather', help='Tells you the weather (weather [location])')
 async def weather(ctx, location: str):
     debug(ctx)
     print('contacting api.openweathermap.org')
-    await ctx.send(f'The weather in {location}:')
     observation = mgr.weather_at_place(location)
     w = observation.weather
     temperature = w.temperature('celsius')
@@ -125,23 +123,21 @@ async def weather(ctx, location: str):
     tempmin = temperature['temp_min']
     tempmax = temperature['temp_max']
     print('success')
-    await ctx.send(f'Temperature right now: {temp} celsius')
-    await ctx.send(f'Today are at least {tempmin} celsius and it should get up to {tempmax} celsius!')
+    await ctx.send(f'The weather in {location}: \nTemperature right now: {temp} celsius \nToday are at least {tempmin} celsius and it should get up to {tempmax} celsius!')
 
 @bot.command(name='w2g', help="Creates a watch2gether room for you (w2g [video-link])")
 async def w2g(ctx, link=''):
     debug(ctx)
     print('contacting w2g.tv/rooms/create.json')
-    await ctx.send('creating a room for you:')
     r = requests.post('https://w2g.tv/rooms/create.json', json={"w2g_api_key": W2G_TOKEN, "share": link})
-    rdata = json.loads(r.text)
-    key = rdata['streamkey']
-    url = f'https://w2g.tv/rooms/{key}'
-    await ctx.send(url)
     if r.status_code == 500:
         await ctx.send('could not contact the API')
         print('could not contact the API')
     else:
+        rdata = json.loads(r.text)
+        key = rdata['streamkey']
+        url = f'https://w2g.tv/rooms/{key}'
+        await ctx.send(f'I created a room for you:\n{url}')
         print(f'streamkey: {key}')
         print('success')
     
@@ -153,8 +149,7 @@ async def meirl(ctx):
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
-    await ctx.send(f'I found this on {subreddit} from {author}:')
-    await ctx.send(rdata['url'])
+    await ctx.send(f"I found this on {subreddit} from {author}: \n{rdata['url']}")
     print(rdata['url'])
     print('success')
 
@@ -166,8 +161,7 @@ async def wholesome(ctx):
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
-    await ctx.send(f'I found this on {subreddit} from {author}:')
-    await ctx.send(rdata['url'])
+    await ctx.send(f"I found this on {subreddit} from {author}: \n{rdata['url']}")
     print(rdata['url'])
     print('success')
 
@@ -179,8 +173,7 @@ async def dank(ctx):
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
-    await ctx.send(f'I found this on {subreddit} from {author}:')
-    await ctx.send(rdata['url'])
+    await ctx.send(f"I found this on {subreddit} from {author}: \n{rdata['url']}")
     print(rdata['url'])
     print('success')
 
@@ -195,8 +188,7 @@ async def servers(ctx):
 @bot.command(name='feedback', help='Sends you a link where you can give feedback to Maki!')
 async def feedback(ctx):
     debug(ctx)
-    await ctx.send('https://forms.gle/qydSqZad57PvGNL79')
-    await ctx.send('Thank you! (´｡• ᵕ •｡`) ♡')
+    await ctx.send('https://forms.gle/qydSqZad57PvGNL79 \nThank you! (´｡• ᵕ •｡`) ♡')
 
 @bot.command(name='createuser', help='Creates a User in the Maki-Network! (wip)')
 async def createUser(ctx):
@@ -219,6 +211,7 @@ async def createUser(ctx):
 @bot.command(name='userinfo', help='Gives you Information about your user on the Maki-database.')
 async def userinfo(ctx):
     debug(ctx)
+
     try:
         balance = getBalance(ctx.author.id)
         timestamp = getCreationDate(ctx.author.id)
