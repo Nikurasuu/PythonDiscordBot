@@ -126,7 +126,6 @@ async def w2g(ctx, link=''):
         print(f'streamkey: {key}')
         print('success')
     
-
 @bot.command(name='meirl', help='Sends a meme from me_irl subreddit')
 async def meirl(ctx):
     debug(ctx)
@@ -169,11 +168,8 @@ async def dank(ctx):
 @bot.command(name='servers', help='Shows you how many servers the bot is connected to')
 async def servers(ctx):
     debug(ctx)
-    global connectedServers
     connectedServers = 0
-    activeservers = bot.guilds
-    for guild in activeservers:
-        #print(guild.name)
+    for i in bot.guilds:
         connectedServers += 1
     await ctx.send(f'currently connected to {connectedServers} servers!')
 
@@ -209,17 +205,13 @@ async def balance(ctx):
     mycursor = mydb.cursor(buffered=True)
     mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {ctx.author.id}')
     mydb.commit()
-
+    
     try:
         balance = mycursor.fetchone()[0]
-        if balance == []:
-            await ctx.send("Seems like you don't have a user in the Maki-database: create one with +createuser")
-        else:
-            await ctx.send(f'Your balance is {balance} coins. ')
+        await ctx.send(f'Your balance is {balance} coins. ')
     except:
         await ctx.send('Error occured:  try "+createuser"! (×﹏×)')
     
-
 @bot.event
 async def on_command_error(ctx, error):
     debug(ctx)
