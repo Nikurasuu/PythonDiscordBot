@@ -36,14 +36,11 @@ print(mydb)
 
 connectedServers = 0
 
-# Change only the no_category default string
 help_command = commands.DefaultHelpCommand(
     no_category = 'Commands'
 )
 
 bot = commands.Bot(command_prefix='+', help_command = help_command)
-
-
 
 
 def debug(ctx):
@@ -222,8 +219,6 @@ async def balance(ctx):
     except:
         await ctx.send('Error occured:  try "+createuser"! (×﹏×)')
     
-
-
 
 @bot.event
 async def on_command_error(ctx, error):
