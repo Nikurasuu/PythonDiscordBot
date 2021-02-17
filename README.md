@@ -1,5 +1,5 @@
 # Maki Discord Bot
-![alt text](https://ibb.co/Yk7Y0JR)
+![alt text](https://i.ibb.co/58WtKCM/Screenshot-2021-02-17-192802.png)
 
 Hier befindet sich der Code hinter Maki
 
