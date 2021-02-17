@@ -35,14 +35,13 @@ print(mydb)
 
 connectedServers = 0
 
-# Change only the no_category default string
 help_command = commands.DefaultHelpCommand(
     no_category = 'Commands'
 )
 
 bot = commands.Bot(command_prefix='m!', help_command = help_command)
-
-
+playingStatus='m!help'
+#print('!work-in-progress!')
 
 
 def debug(ctx):
@@ -51,11 +50,30 @@ def debug(ctx):
     username = ctx.author.name
     print(f'{dateTimeObj}: responding {username}({user})')
 
+def getBalance(discordid):
+    mycursor = mydb.cursor(buffered=True)
+    mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {discordid}')
+    mydb.commit()
+    return mycursor.fetchone()[0]
+
+def getCreationDate(discordid):
+    mycursor = mydb.cursor(buffered=True)
+    mycursor.execute(f'SELECT date_joined FROM Users WHERE discord_id = {discordid}')
+    mydb.commit()
+    date_joined = mycursor.fetchone()[0]
+    return datetime.fromtimestamp(date_joined).strftime('%d-%m-%Y')
+
+def getUserID(discordid):
+    mycursor = mydb.cursor(buffered=True)
+    mycursor.execute(f'SELECT id FROM Users WHERE discord_id = {discordid}')
+    mydb.commit()
+    return mycursor.fetchone()[0]
+
 
 @bot.event
 async def on_ready():
     print('connected and running!')
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="m!help"))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=playingStatus))
     activeservers = bot.guilds
     for guild in activeservers:
         #print(guild.name)
@@ -67,8 +85,7 @@ async def on_ready():
 @bot.command(name='github', help='Shows you the source-code of this bot')
 async def github(ctx):
     debug(ctx)
-    response = "https://github.com/Nikurasuu/PythonDiscordBot"
-    await ctx.send(response)
+    await ctx.send('https://github.com/Nikurasuu/PythonDiscordBot')
 
 @bot.command(name='rolldice', help='Rolls a dice for you (rolldice [amount] [sides])')
 async def roll(ctx, number_of_dice: int, number_of_sides: int):
@@ -93,14 +110,12 @@ async def magic(ctx):
 @bot.command(name='fact', help='Shows you a random fact from the internet ☆ﾐ(o*･ω･)ﾉ')
 async def fact(ctx):
     debug(ctx)
-    await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
-    await ctx.send(randfacts.getFact())
+    await ctx.send(f'(⌒ω⌒)ﾉ okay here comes one: \n{randfacts.getFact()}')
 
 @bot.command(name='weather', help='Tells you the weather (weather [location])')
 async def weather(ctx, location: str):
     debug(ctx)
     print('contacting api.openweathermap.org')
-    await ctx.send(f'The weather in {location}:')
     observation = mgr.weather_at_place(location)
     w = observation.weather
     temperature = w.temperature('celsius')
@@ -108,27 +123,24 @@ async def weather(ctx, location: str):
     tempmin = temperature['temp_min']
     tempmax = temperature['temp_max']
     print('success')
-    await ctx.send(f'Temperature right now: {temp} celsius')
-    await ctx.send(f'Today are at least {tempmin} celsius and it should get up to {tempmax} celsius!')
+    await ctx.send(f'The weather in {location}: \nTemperature right now: {temp} celsius \nToday are at least {tempmin} celsius and it should get up to {tempmax} celsius!')
 
 @bot.command(name='w2g', help="Creates a watch2gether room for you (w2g [video-link])")
 async def w2g(ctx, link=''):
     debug(ctx)
     print('contacting w2g.tv/rooms/create.json')
-    await ctx.send('creating a room for you:')
     r = requests.post('https://w2g.tv/rooms/create.json', json={"w2g_api_key": W2G_TOKEN, "share": link})
-    rdata = json.loads(r.text)
-    key = rdata['streamkey']
-    url = f'https://w2g.tv/rooms/{key}'
-    await ctx.send(url)
     if r.status_code == 500:
         await ctx.send('could not contact the API')
         print('could not contact the API')
     else:
+        rdata = json.loads(r.text)
+        key = rdata['streamkey']
+        url = f'https://w2g.tv/rooms/{key}'
+        await ctx.send(f'I created a room for you:\n{url}')
         print(f'streamkey: {key}')
         print('success')
     
-
 @bot.command(name='meirl', help='Sends a meme from me_irl subreddit')
 async def meirl(ctx):
     debug(ctx)
@@ -137,8 +149,7 @@ async def meirl(ctx):
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
-    await ctx.send(f'I found this on {subreddit} from {author}:')
-    await ctx.send(rdata['url'])
+    await ctx.send(f"I found this on {subreddit} from {author}: \n{rdata['url']}")
     print(rdata['url'])
     print('success')
 
@@ -150,8 +161,7 @@ async def wholesome(ctx):
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
-    await ctx.send(f'I found this on {subreddit} from {author}:')
-    await ctx.send(rdata['url'])
+    await ctx.send(f"I found this on {subreddit} from {author}: \n{rdata['url']}")
     print(rdata['url'])
     print('success')
 
@@ -163,27 +173,22 @@ async def dank(ctx):
     rdata = json.loads(r.text)
     subreddit = rdata['subreddit']
     author = rdata['author']
-    await ctx.send(f'I found this on {subreddit} from {author}:')
-    await ctx.send(rdata['url'])
+    await ctx.send(f"I found this on {subreddit} from {author}: \n{rdata['url']}")
     print(rdata['url'])
     print('success')
 
 @bot.command(name='servers', help='Shows you how many servers the bot is connected to')
 async def servers(ctx):
     debug(ctx)
-    global connectedServers
     connectedServers = 0
-    activeservers = bot.guilds
-    for guild in activeservers:
-        #print(guild.name)
+    for i in bot.guilds:
         connectedServers += 1
     await ctx.send(f'currently connected to {connectedServers} servers!')
 
 @bot.command(name='feedback', help='Sends you a link where you can give feedback to Maki!')
 async def feedback(ctx):
     debug(ctx)
-    await ctx.send('https://forms.gle/qydSqZad57PvGNL79')
-    await ctx.send('Thank you! (´｡• ᵕ •｡`) ♡')
+    await ctx.send('https://forms.gle/qydSqZad57PvGNL79 \nThank you! (´｡• ᵕ •｡`) ♡')
 
 @bot.command(name='createuser', help='Creates a User in the Maki-Network! (wip)')
 async def createUser(ctx):
@@ -203,26 +208,27 @@ async def createUser(ctx):
     else:
         await ctx.send(f'User with your Discord-ID already exists in the database. ｡ﾟ･ (>﹏<) ･ﾟ｡')
 
+@bot.command(name='userinfo', help='Gives you Information about your user on the Maki-database.')
+async def userinfo(ctx):
+    debug(ctx)
+
+    try:
+        balance = getBalance(ctx.author.id)
+        timestamp = getCreationDate(ctx.author.id)
+        userid = getUserID(ctx.author.id)
+        await ctx.send(f'User: {ctx.author.name} \nUser-ID: {userid} \nDate created: {timestamp} \nBalance: {balance}')
+    except:
+        await ctx.send(f'Could not find user for {ctx.author.name} (×﹏×)\n->   try "+createuser"!')
+
+
 @bot.command(name='balance', help='Shows you your balance in the Maki-database.')
 async def balance(ctx):
     debug(ctx)
-
-    #Check Balance
-    mycursor = mydb.cursor(buffered=True)
-    mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {ctx.author.id}')
-    mydb.commit()
-
     try:
-        balance = mycursor.fetchone()[0]
-        if balance == []:
-            await ctx.send("Seems like you don't have a user in the Maki-database: create one with +createuser")
-        else:
-            await ctx.send(f'Your balance is {balance} coins. ')
+        await ctx.send(f'Your balance is {getBalance(ctx.author.id)} coins. ')
     except:
-        await ctx.send('Error occured:  try "+createuser"! (×﹏×)')
+        await ctx.send(f'Could not find balance for {ctx.author.name} (×﹏×)\n->   try "+createuser"!')
     
-
-
 
 @bot.event
 async def on_command_error(ctx, error):
