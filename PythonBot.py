@@ -70,7 +70,7 @@ async def github(ctx):
     response = "https://github.com/Nikurasuu/PythonDiscordBot"
     await ctx.send(response)
 
-@bot.command(name='rolldice', help='Rolls a dice for you (+rolldice [amount] [sides])')
+@bot.command(name='rolldice', help='Rolls a dice for you (rolldice [amount] [sides])')
 async def roll(ctx, number_of_dice: int, number_of_sides: int):
     debug(ctx)
     for _ in range(number_of_dice):
@@ -96,7 +96,7 @@ async def fact(ctx):
     await ctx.send('(⌒ω⌒)ﾉ okay here comes one: ')
     await ctx.send(randfacts.getFact())
 
-@bot.command(name='weather', help='Tells you the weather (+weather [location])')
+@bot.command(name='weather', help='Tells you the weather (weather [location])')
 async def weather(ctx, location: str):
     debug(ctx)
     print('contacting api.openweathermap.org')
@@ -111,7 +111,7 @@ async def weather(ctx, location: str):
     await ctx.send(f'Temperature right now: {temp} celsius')
     await ctx.send(f'Today are at least {tempmin} celsius and it should get up to {tempmax} celsius!')
 
-@bot.command(name='w2g', help="Creates a watch2gether room for you (+w2g [video-link])")
+@bot.command(name='w2g', help="Creates a watch2gether room for you (w2g [video-link])")
 async def w2g(ctx, link=''):
     debug(ctx)
     print('contacting w2g.tv/rooms/create.json')
