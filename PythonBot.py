@@ -69,13 +69,13 @@ def debug(ctx):
 
 def getBalance(discordid):
     mycursor = getCursor()
-    mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {discordid}')
+    mycursor.execute(f'SELECT balance FROM users WHERE discord_id = {discordid}')
     mydb.commit()
     return mycursor.fetchone()[0]
 
 def addBalance(discordid, amount):
     mycursor = getCursor()
-    mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {discordid}')
+    mycursor.execute(f'SELECT balance FROM users WHERE discord_id = {discordid}')
     mydb.commit()
     oldBalance = mycursor.fetchone()[0]
     newBalance = oldBalance + amount
@@ -87,14 +87,14 @@ def addBalance(discordid, amount):
 
 def getCreationDate(discordid):
     mycursor = getCursor()
-    mycursor.execute(f'SELECT date_joined FROM Users WHERE discord_id = {discordid}')
+    mycursor.execute(f'SELECT date_joined FROM users WHERE discord_id = {discordid}')
     mydb.commit()
     date_joined = mycursor.fetchone()[0]
     return datetime.fromtimestamp(date_joined).strftime('%d-%m-%Y')
 
 def getUserID(discordid):
     mycursor = getCursor()
-    mycursor.execute(f'SELECT id FROM Users WHERE discord_id = {discordid}')
+    mycursor.execute(f'SELECT id FROM users WHERE discord_id = {discordid}')
     mydb.commit()
     return mycursor.fetchone()[0]
 
@@ -228,12 +228,12 @@ async def createUser(ctx):
         debug(ctx)
         #Check if the discord user id is already in the database
         mycursor = getCursor()
-        mycursor.execute(f"SELECT id FROM Users WHERE discord_id = {ctx.author.id}")
+        mycursor.execute(f"SELECT id FROM users WHERE discord_id = {ctx.author.id}")
         mydb.commit()
         checkUser = mycursor.fetchall()
         if checkUser == []:
             mycursor = getCursor()
-            mycursor.execute(f"INSERT INTO Users (discord_id, balance, date_joined) VALUES ({ctx.author.id}, {100}, {time.time()})")
+            mycursor.execute(f"INSERT INTO users (discord_id, balance, date_joined) VALUES ({ctx.author.id}, {100}, {time.time()})")
             mydb.commit()
             await ctx.send(f'Succesfully created a user for `{ctx.author.name}`. \nWelcome to the Maki-network! ＼(⌒▽⌒)')
         else:
@@ -265,7 +265,7 @@ async def dailyreward(ctx):
     #Check if user has account
     debug(ctx)
     mycursor = getCursor()
-    mycursor.execute(f"SELECT id FROM Users WHERE discord_id = {ctx.author.id}")
+    mycursor.execute(f"SELECT id FROM users WHERE discord_id = {ctx.author.id}")
     mydb.commit()
     checkUser = mycursor.fetchall()
     if checkUser == []:
