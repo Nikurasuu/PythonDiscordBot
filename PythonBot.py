@@ -39,9 +39,9 @@ help_command = commands.DefaultHelpCommand(
     no_category = 'Commands'
 )
 
-bot = commands.Bot(command_prefix='m!', help_command = help_command)
-playingStatus='m!info'
-#print('!work-in-progress!')
+bot = commands.Bot(command_prefix='+', help_command = help_command)
+playingStatus='something'
+print('!work-in-progress!')
 
 
 def debug(ctx):
