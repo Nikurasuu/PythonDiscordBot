@@ -245,7 +245,7 @@ async def info(ctx):
     debug(ctx)
     with open ("info.txt", "r") as myfile:
         data=myfile.readlines()
-    news = 'News:\n'
+    news = ''
     for lines in data:
         news = news + lines
     print(news)
