@@ -228,6 +228,28 @@ async def balance(ctx):
         await ctx.send(f'Your balance is `{getBalance(ctx.author.id)}` coins. ')
     except:
         await ctx.send(f'Could not find balance for `{ctx.author.name}` (×﹏×)\n->   try `+createuser`!')
+
+@bot.command(name='news', help='Gives you news about Maki.')
+async def news(ctx):
+    debug(ctx)
+    with open ("news.txt", "r") as myfile:
+        data=myfile.readlines()
+    news = 'News:\n'
+    for lines in data:
+        news = news + lines
+    print(news)
+    await ctx.send(f'`{news}`')
+
+@bot.command(name='info', help='Gives you Information about Maki.')
+async def info(ctx):
+    debug(ctx)
+    with open ("info.txt", "r") as myfile:
+        data=myfile.readlines()
+    news = 'News:\n'
+    for lines in data:
+        news = news + lines
+    print(news)
+    await ctx.send(f'`{news}`')
     
 
 @bot.event
