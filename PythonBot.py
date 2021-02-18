@@ -24,13 +24,30 @@ OWM_TOKEN = os.getenv('OWM_TOKEN')
 owm = OWM(OWM_TOKEN)
 mgr = owm.weather_manager()
 
-mydb = mysql.connector.connect(
-    host='localhost',
-    user="Maki",
-    passwd="Maki",
-    database="PythonBot"
-)
+mydb = None
 
+def initDatabase():
+    return mysql.connector.connect(
+        host='localhost',
+        user="Maki",
+        passwd="Maki",
+        database="PythonBot"
+    )
+
+def getCursor():
+    global mydb
+    try:
+        mydb.ping(reconnect=True, attempts=3, delay=2)
+        print('MySQL pinged successfully!')
+    except mysql.connector.Error as err:  
+        try:
+            mydb = initDatabase()
+            print(f'Reconnected MySQL: {mydb}')
+        except:
+            print('Could not reconnect to MySQL!!')
+    return mydb.cursor(buffered=True)
+
+mydb = initDatabase()
 print(mydb)
 
 connectedServers = 0
@@ -51,20 +68,32 @@ def debug(ctx):
     print(f'{dateTimeObj}: responding {username}({user})')
 
 def getBalance(discordid):
-    mycursor = mydb.cursor(buffered=True)
+    mycursor = getCursor()
     mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {discordid}')
     mydb.commit()
     return mycursor.fetchone()[0]
 
+def addBalance(discordid, amount):
+    mycursor = getCursor()
+    mycursor.execute(f'SELECT balance FROM Users WHERE discord_id = {discordid}')
+    mydb.commit()
+    oldBalance = mycursor.fetchone()[0]
+    newBalance = oldBalance + amount
+    mycursor = getCursor()
+    mycursor.execute(f'UPDATE users SET balance = {newBalance} WHERE discord_id = {discordid}')
+    mydb.commit()
+    print(f'Added {amount} to {discordid}')
+
+
 def getCreationDate(discordid):
-    mycursor = mydb.cursor(buffered=True)
+    mycursor = getCursor()
     mycursor.execute(f'SELECT date_joined FROM Users WHERE discord_id = {discordid}')
     mydb.commit()
     date_joined = mycursor.fetchone()[0]
     return datetime.fromtimestamp(date_joined).strftime('%d-%m-%Y')
 
 def getUserID(discordid):
-    mycursor = mydb.cursor(buffered=True)
+    mycursor = getCursor()
     mycursor.execute(f'SELECT id FROM Users WHERE discord_id = {discordid}')
     mydb.commit()
     return mycursor.fetchone()[0]
@@ -195,19 +224,22 @@ async def feedback(ctx):
 
 @bot.command(name='createuser', help='Creates a User in the Maki-Network! (wip)')
 async def createUser(ctx):
-    debug(ctx)
-    #Check if the discord user id is already in the database
-    mycursor = mydb.cursor(buffered=True)
-    mycursor.execute(f"SELECT id FROM Users WHERE discord_id = {ctx.author.id}")
-    mydb.commit()
-    checkUser = mycursor.fetchall()
-    if checkUser == []:
-        mycursor = mydb.cursor(buffered=True)
-        mycursor.execute(f"INSERT INTO Users (discord_id, balance, date_joined) VALUES ({ctx.author.id}, {100}, {time.time()})")
+    try:
+        debug(ctx)
+        #Check if the discord user id is already in the database
+        mycursor = getCursor()
+        mycursor.execute(f"SELECT id FROM Users WHERE discord_id = {ctx.author.id}")
         mydb.commit()
-        await ctx.send(f'Succesfully created a user for `{ctx.author.name}`. \nWelcome to the Maki-network! ＼(⌒▽⌒)')
-    else:
-        await ctx.send(f'User with your Discord-ID already exists in the database. ｡ﾟ･ (>﹏<) ･ﾟ｡')
+        checkUser = mycursor.fetchall()
+        if checkUser == []:
+            mycursor = getCursor()
+            mycursor.execute(f"INSERT INTO Users (discord_id, balance, date_joined) VALUES ({ctx.author.id}, {100}, {time.time()})")
+            mydb.commit()
+            await ctx.send(f'Succesfully created a user for `{ctx.author.name}`. \nWelcome to the Maki-network! ＼(⌒▽⌒)')
+        else:
+            await ctx.send(f'User with your Discord-ID already exists in the database. ｡ﾟ･ (>﹏<) ･ﾟ｡')
+    except:
+        await ctx.send(f'Error occured while creating user for `{ctx.author.name}`! ｡ﾟ･ (>﹏<) ･ﾟ｡')
 
 @bot.command(name='userinfo', help='Gives you Information about your user on the Maki-database.')
 async def userinfo(ctx):
@@ -220,7 +252,6 @@ async def userinfo(ctx):
     except:
         await ctx.send(f'Could not find user for `{ctx.author.name}` (×﹏×)\n->   try `+createuser`!')
 
-
 @bot.command(name='balance', help='Shows you your balance in the Maki-database.')
 async def balance(ctx):
     debug(ctx)
@@ -228,6 +259,54 @@ async def balance(ctx):
         await ctx.send(f'Your balance is `{getBalance(ctx.author.id)}` coins. ')
     except:
         await ctx.send(f'Could not find balance for `{ctx.author.name}` (×﹏×)\n->   try `+createuser`!')
+
+@bot.command(name='dailyreward', help='Shows you your balance in the Maki-database.')
+async def dailyreward(ctx):
+    #Check if user has account
+    debug(ctx)
+    mycursor = getCursor()
+    mycursor.execute(f"SELECT id FROM Users WHERE discord_id = {ctx.author.id}")
+    mydb.commit()
+    checkUser = mycursor.fetchall()
+    if checkUser == []:
+        await ctx.send(f'Could not find user for `{ctx.author.name}` (×﹏×)\n->   try `+createuser`!')
+    else:
+        #Check if user ever received daily rewards
+        mycursor = getCursor()
+        mycursor.execute(f"SELECT id FROM daily_rewards WHERE discord_id = {ctx.author.id}")
+        mydb.commit()
+        checkdailyreward = mycursor.fetchall()
+        if checkdailyreward == []:
+            #Creates user daily reward and adds the balance
+            print(f"Can't find entry for {ctx.author.name}: creating one..")
+            mycursor = getCursor()
+            mycursor.execute(f"INSERT INTO daily_rewards (discord_id, amount, last_received) VALUES ({ctx.author.id}, {20}, {time.time()})")
+            mydb.commit()
+            await ctx.send(f'`{ctx.author.name}` earned their daily reward!\nYou seem to never earned daily rewards before! Make sure to get your daily reward every day with `m!dailyreward`')
+            mycursor = getCursor()
+            mycursor.execute(f"SELECT amount FROM daily_rewards WHERE discord_id = {ctx.author.id}")
+            mydb.commit()
+            amount = mycursor.fetchone()[0]
+            addBalance(ctx.author.id, amount)
+        else:
+            #Check last received
+            mycursor = getCursor()
+            mycursor.execute(f"SELECT last_received FROM daily_rewards WHERE discord_id = {ctx.author.id}")
+            mydb.commit()
+            lastReceived = mycursor.fetchone()[0]
+            if time.time() - lastReceived > 86400:
+                #add daily reward balance
+                mycursor = getCursor()
+                mycursor.execute(f"SELECT amount FROM daily_rewards WHERE discord_id = {ctx.author.id}")
+                mydb.commit()
+                amount = mycursor.fetchone()[0]
+                addBalance(ctx.author.id, amount)
+                await ctx.send(f'`{ctx.author.name}` earned their daily reward!')
+            else:
+                #reject add balance
+                remainingTime = (86400 - (time.time() - lastReceived))/3600
+                await ctx.send(f'You have to wait `{round(remainingTime)} hours` to earn your daily reward!')
+            
 
 @bot.command(name='news', help='Gives you news about Maki.')
 async def news(ctx):
