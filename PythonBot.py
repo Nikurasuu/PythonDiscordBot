@@ -301,6 +301,10 @@ async def dailyreward(ctx):
                 mydb.commit()
                 amount = mycursor.fetchone()[0]
                 addBalance(ctx.author.id, amount)
+                #adds time.time() to last_received
+                mycursor = getCursor()
+                mycursor.execute(f'UPDATE daily_rewards SET last_received = {time.time()} WHERE discord_id = {ctx.author.id}')
+                mydb.commit()
                 await ctx.send(f'`{ctx.author.name}` earned their daily reward!')
             else:
                 #reject add balance
