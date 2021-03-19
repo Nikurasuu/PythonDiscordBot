@@ -56,8 +56,8 @@ help_command = commands.DefaultHelpCommand(
     no_category = 'Commands'
 )
 
-bot = commands.Bot(command_prefix='m!', help_command = help_command)
-playingStatus='m!info'
+bot = commands.Bot(command_prefix='m.', help_command = help_command)
+playingStatus='m.info'
 #print('!work-in-progress!')
 
 
@@ -145,17 +145,25 @@ async def fact(ctx):
     await ctx.send(f'(⌒ω⌒)ﾉ okay here comes one: \n`{randfacts.getFact()}`')
 
 @bot.command(name='weather', help='Tells you the weather (weather [location])')
-async def weather(ctx, location: str):
+async def weather(ctx, *args):
     debug(ctx)
+    location = " ".join(args[:])
+    location = location.replace("(","")
+    location = location.replace(")","")
+    location = location.replace("'","")
+    location = location.replace(",","")
+    try:
+        observation = mgr.weather_at_place(location)
+    except:
+        await ctx.send("I can't find the right location!")
     print('contacting api.openweathermap.org')
-    observation = mgr.weather_at_place(location)
     w = observation.weather
     temperature = w.temperature('celsius')
     temp = temperature['temp']
     tempmin = temperature['temp_min']
     tempmax = temperature['temp_max']
     print('success')
-    await ctx.send(f'The weather in `{location}`: \nTemperature right now: `{temp}` celsius \nToday are at least `{tempmin}` celsius and it should get up to {tempmax} celsius!')
+    await ctx.send(f'The weather in `{location}`: \nTemperature right now: `{temp}` celsius \nToday are at least `{tempmin}` celsius and it should get up to `{tempmax}` celsius!')
 
 @bot.command(name='w2g', help="Creates a watch2gether room for you (w2g [video-link])")
 async def w2g(ctx, link=''):
