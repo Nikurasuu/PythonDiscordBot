@@ -268,7 +268,7 @@ async def balance(ctx):
     except:
         await ctx.send(f'Could not find balance for `{ctx.author.name}` (×﹏×)\n->   try `+createuser`!')
 
-@bot.command(name='dailyreward', help='Shows you your balance in the Maki-database.')
+@bot.command(name='dailyreward', help='Claim your daily coins!')
 async def dailyreward(ctx):
     #Check if user has account
     debug(ctx)
